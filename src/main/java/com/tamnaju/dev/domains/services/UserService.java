@@ -14,8 +14,9 @@ public class UserService {
     private UserMapper userMapper;
 
     public UserJoinResult insertUserDto(JSONObject responseObject, UserDto userDto) {
+        // PK에 대한 중복 여부 검증
         if (userMapper.findUserByEmail(userDto.getEmail()) != null) {
-            return UserJoinResult.FAILURE;
+            return UserJoinResult.FAILURE_DUPLICATE_EMAIL;
         }
         UserEntity userEntity = UserDto.userDtoToUserEntity(userDto);
         return userMapper.saveUserEntity(userEntity) > 0

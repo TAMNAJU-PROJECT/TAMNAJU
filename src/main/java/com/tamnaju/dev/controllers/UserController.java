@@ -28,6 +28,7 @@ public class UserController {
     public JSONObject postJoin(@Valid UserDto userDto, BindingResult bindingResult) {
         JSONObject responseObject = new JSONObject();
         UserJoinResult userJoinResult;
+        // UserDto 정규화
         if (bindingResult.hasFieldErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 responseObject.put(fieldError.getField(), fieldError.getDefaultMessage());
