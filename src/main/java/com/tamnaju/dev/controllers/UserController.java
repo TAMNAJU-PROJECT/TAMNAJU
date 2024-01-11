@@ -50,7 +50,7 @@ public class UserController {
             userJoinResult = UserJoinResult.FAILURE;
         } else {
             userDto.setBirth(LocalDate.parse(birthStr));
-            userJoinResult = userService.join(responseObject, userDto);
+            userJoinResult = userService.insertUser(responseObject, userDto);
         }
         responseObject.put("result", userJoinResult.name().toLowerCase());
         return responseObject;
@@ -70,7 +70,7 @@ public class UserController {
         if (bindingResult.hasFieldErrors("email") || bindingResult.hasFieldErrors("password")) {
             userLoginResult = UserLoginResult.FAILURE;
         } else {
-            userLoginResult = userService.login(userDto);
+            userLoginResult = userService.selectUserByEmailAndPassword(userDto);
         }
         responseObject.put("result", userLoginResult.name().toLowerCase());
         return responseObject;

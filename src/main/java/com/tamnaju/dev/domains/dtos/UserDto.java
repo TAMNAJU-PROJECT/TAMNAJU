@@ -41,18 +41,18 @@ public class UserDto {
 
     private LocalDateTime suspendedAt;
 
-    // UserDto를 UserEntity로 변환하는 정적 메소드
-    public static UserEntity userDtoToUserEntity(UserDto userDto) {
-        return UserEntity.builder()
-                .email(userDto.getEmail())
-                .name(userDto.getName())
-                .nickname(userDto.getNickname())
-                .password(userDto.getPassword())
-                .birth(userDto.getBirth())
-                .isAdmin(userDto.isAdmin())
-                .registeredAt(userDto.getRegisteredAt())
-                .deletedAt(userDto.getDeletedAt())
-                .suspendedAt(userDto.getSuspendedAt())
+    // UserEntity를 UserDto로 변환하는 정적 메소드
+    public static UserDto userEntityToUserDto(UserEntity userEntity) {
+        return UserDto.builder()
+                .email(userEntity.getEmail())
+                .name(userEntity.getName())
+                .nickname(userEntity.getNickname())
+                .password(userEntity.getPassword())
+                .birth(userEntity.getBirth())
+                .isAdmin(userEntity.isAdmin())
+                .registeredAt(userEntity.getRegisteredAt())
+                .deletedAt(userEntity.getDeletedAt())
+                .suspendedAt(userEntity.getSuspendedAt())
                 .build();
     }
 }

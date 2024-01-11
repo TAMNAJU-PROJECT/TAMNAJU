@@ -21,8 +21,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserJoinResult join(JSONObject responseObject, UserDto userDto) {
-        UserEntity userEntity = UserDto.userDtoToUserEntity(userDto);
+    public UserJoinResult insertUser(JSONObject responseObject, UserDto userDto) {
+        UserEntity userEntity = UserEntity.userDtoToUserEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         // PK에 대한 중복 여부 검증
         if (userMapper.findUserByEmail(userEntity.getEmail()) != null) {
@@ -33,7 +33,7 @@ public class UserService {
                 : UserJoinResult.FAILURE;
     }
 
-    public UserLoginResult login(UserDto userDto) {
+    public UserLoginResult selectUserByEmailAndPassword(UserDto userDto) {
         UserEntity dbUser = userMapper.findUserByEmail(userDto.getEmail());
         return passwordEncoder.matches(userDto.getPassword(), dbUser.getPassword())
                 ? UserLoginResult.SUCCESS
