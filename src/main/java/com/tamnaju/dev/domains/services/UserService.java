@@ -7,6 +7,7 @@ import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.entities.UserEntity;
 import com.tamnaju.dev.domains.mappers.UserMapper;
 import com.tamnaju.dev.domains.results.UserJoinResult;
+import com.tamnaju.dev.domains.results.UserLoginResult;
 
 import net.minidev.json.JSONObject;
 
@@ -20,7 +21,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserJoinResult insertUserDto(JSONObject responseObject, UserDto userDto) {
+    public UserJoinResult join(JSONObject responseObject, UserDto userDto) {
         UserEntity userEntity = UserDto.userDtoToUserEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         // PK에 대한 중복 여부 검증
@@ -30,5 +31,12 @@ public class UserService {
         return userMapper.saveUser(userEntity) > 0
                 ? UserJoinResult.SUCCESS
                 : UserJoinResult.FAILURE;
+    }
+
+    public UserLoginResult login(UserDto userDto) {
+        UserEntity dbUser = userMapper.findUserByEmail(userDto.getEmail());
+        return passwordEncoder.matches(userDto.getPassword(), dbUser.getPassword())
+                ? UserLoginResult.SUCCESS
+                : UserLoginResult.FAILURE;
     }
 }

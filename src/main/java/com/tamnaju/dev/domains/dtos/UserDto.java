@@ -21,11 +21,9 @@ public class UserDto {
     @Pattern(regexp = "^(?=[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}).{1,50}$", message = "서버가 인식할 수 없는 형식의 Email입니다.")
     private String email;
 
-    @NotBlank
     @Pattern(regexp = "^[A-Za-z가-힣\\s]{2,10}$", message = "영어 또는 한글로 된 10자 이하의 이름을 입력해야 합니다.")
     private String name;
 
-    @NotBlank
     @Pattern(regexp = "^[A-Za-z가-힣\\s]{2,10}$", message = "영어 또는 한글로 된 10자 이하의 별명을 입력해야 합니다.")
     private String nickname;
 
