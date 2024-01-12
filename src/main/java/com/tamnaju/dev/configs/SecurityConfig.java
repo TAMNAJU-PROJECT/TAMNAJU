@@ -2,6 +2,9 @@ package com.tamnaju.dev.configs;
 
 import java.io.IOException;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,8 +23,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import com.zaxxer.hikari.HikariDataSource;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +30,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private HikariDataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -143,7 +145,13 @@ public class SecurityConfig {
     @Bean
     public PersistentTokenRepository tokenRepository() {
         JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepositoryImpl.setDataSource(dataSource);
+        // TODO 다음 경고를 우회하기 위해 if문 추가
+        // 타당성 검증 필요
+        // Null type safety: The expression of type 'DataSource' needs unchecked
+        // conversion to conform to '@NonNull DataSource'Java(16778128)
+        if (dataSource != null) {
+            jdbcTokenRepositoryImpl.setDataSource(dataSource);
+        }
         return jdbcTokenRepositoryImpl;
     }
 
