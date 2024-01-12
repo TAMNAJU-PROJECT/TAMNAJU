@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <!-- common -->
-<!-- Notification Modal -->
+<!-- Notification,Loading Modal -->
 <th:block th:fragment="common">
     <div id="dialog">
         <div class="modal" rel="modal">
@@ -21,12 +21,12 @@
 </th:block>
 
 <!-- Header -->
-<header id="header" th:fragment="${header}">
+<th:block th:fragment="header" id="header">
     header 자리
-</header>
+</th:block>
 
 <!-- Footer -->
-<footer id="footer" th:fragment="${footer}">
+<th:block th:fragment="footer" id="footer">
     footer 자리
-</footer>
+</th:block>
 </html>
