@@ -6,12 +6,12 @@
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
 </head>
 <body>
-    <th:block th:replace="~{fragments.html :: common}"></th:block>
-    <th:block th:replace="~{fragments.html :: header}"></th:block>
+    <th:block th:include="fragment :: common"></th:block>
+    <th:block th:include="fragment :: header"></th:block>
     <main class="main-container">
         main 자리
     </main>
-    <th:block th:replace="~{fragment :: footer}"></th:block>
+    <th:block th:include="fragment :: footer"></th:block>
 </body>
 
 </html>

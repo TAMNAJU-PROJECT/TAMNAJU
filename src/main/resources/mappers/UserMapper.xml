@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.daniel.studybbs.mappers.UserMapper">
+<mapper namespace="com.tamnaju.dev.domains.mappers.UserMapper">
+    <insert id="saveUser"
+            parameterType="com.tamnaju.dev.domains.entities.UserEntity">
+        INSERT INTO `tamnaju_db`.`users` (`email`,
+                                          `name`,
+                                          `nickname`,
+                                          `password`,
+                                          `birth`,
+                                          `admin_flag`)
+        VALUES (#{email},
+                #{name},
+                #{nickname},
+                #{password},
+                #{birth},
+                #{isAdmin})
+    </insert>
 
+    <select id="findUserByEmail"
+            resultType="com.tamnaju.dev.domains.entities.UserEntity">
+        SELECT `email`         AS `email`,
+               `name`          AS `name`,
+               `nickname`      AS `nickname`,
+               `password`      AS `password`,
+               `birth`         AS `birth`,
+               `admin_flag`    AS `isAdmin`,
+               `registered_at` AS `registeredAt`,
+               `deleted_at`    AS `deletedAt`,
+               `suspended_at`  AS `suspendedAt`
+        FROM `tamnaju_db`.`users`
+        WHERE BINARY `email` = #{email}
+        LIMIT 1
+    </select>
 </mapper>

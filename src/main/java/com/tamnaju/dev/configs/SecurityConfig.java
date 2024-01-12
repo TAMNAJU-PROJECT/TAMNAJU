@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,13 +15,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // TODO CSRF 비활성화, 추후 활성화 여부 판단 필요
-        http.csrf(config -> {
-            config.disable();
-        });
+        http.csrf(AbstractHttpConfigurer::disable);
 
         // 특정 URL에 대한 접근 권한 설정
         http.authorizeHttpRequests(authorizeHttpRequests -> {
-            authorizeHttpRequests.requestMatchers("/", "/resources/**").permitAll()
+            authorizeHttpRequests
+                    .requestMatchers("/**").permitAll()
                     .anyRequest().authenticated();
         });
 
