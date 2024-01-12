@@ -9,5 +9,5 @@ import com.tamnaju.dev.domains.entities.UserEntity;
 public interface UserMapper {
     public UserEntity findUserByEmail(@Param(value = "email") String email);
 
-    public int saveUserEntity(UserEntity userEntity);
+    public int saveUser(UserEntity userEntity);
 }
