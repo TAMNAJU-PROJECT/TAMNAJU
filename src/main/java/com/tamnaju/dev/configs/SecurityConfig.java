@@ -1,7 +1,5 @@
 package com.tamnaju.dev.configs;
 
-import java.io.IOException;
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -51,134 +37,141 @@ public class SecurityConfig {
                     .anyRequest().authenticated();
         });
 
-        // 로그인
-        http.formLogin(login -> {
-            login
-                    .permitAll()
-                    .loginPage("user/login")
-                    .successHandler(successHandler())
-                    .failureHandler(failureHandler());
-        });
+        // // 로그인
+        // http.formLogin(login -> {
+        //     login
+        //             .permitAll()
+        //             .loginPage("/user/login")
+        //             .successHandler(successHandler())
+        //             .failureHandler(failureHandler());
+        // });
 
-        // Oauth2 로그인
-        http.oauth2Login(oauth -> {
-            oauth
-                    .loginPage("user/login")
-                    .successHandler(oauth2SuccessHandler());
-        });
+        // // Oauth2 로그인
+        // http.oauth2Login(oauth -> {
+        //     oauth
+        //             .loginPage("/user/login")
+        //             .successHandler(oauth2SuccessHandler());
+        // });
 
-        // RememberMe
-        http.rememberMe(rememberMe -> {
-            rememberMe
-                    .key("rememberMe")
-                    .rememberMeParameter("remember-me")
-                    .alwaysRemember(false)
-                    .tokenValiditySeconds(60 * 60 * 24)
-                    .tokenRepository(tokenRepository());
-        });
+        // // RememberMe
+        // http.rememberMe(rememberMe -> {
+        //     rememberMe
+        //             .key("rememberMe")
+        //             .rememberMeParameter("remember-me")
+        //             .alwaysRemember(false)
+        //             .tokenValiditySeconds(60 * 60 * 24) // 60초 * 60분 * 24시간
+        //             .tokenRepository(tokenRepository());
+        // });
 
-        // 로그아웃
-        http.logout(logout -> {
-            logout
-                    .permitAll()
-                    .logoutUrl("user/logout")
-                    .addLogoutHandler(logoutHandler())
-                    .logoutSuccessHandler(logoutSuccessHandler())
-                    .deleteCookies("")
-                    .invalidateHttpSession(true);
-        });
+        // // 로그아웃
+        // http.logout(logout -> {
+        //     logout
+        //             .permitAll()
+        //             .logoutUrl("/user/logout")
+        //             .addLogoutHandler(logoutHandler())
+        //             .logoutSuccessHandler(logoutSuccessHandler())
+        //             .deleteCookies("") // TODO 제거할 token key 추가 예정
+        //             .invalidateHttpSession(true);
+        // });
 
-        // 예외처리
-        http.exceptionHandling(exception -> {
-            // 인증 진입점 리다이렉션
-            exception.authenticationEntryPoint((request, response, authException) -> {
-                response.sendRedirect("user/login");
-            });
-            // 접근 거부 예외 처리
-            exception.accessDeniedHandler((request, response, accessDeniedException) -> {
-                // TODO
-            });
-        });
+        // // 예외처리
+        // http.exceptionHandling(exception -> {
+        //     // 인증 진입점 리다이렉션
+        //     exception.authenticationEntryPoint((request, response, authException) -> {
+        //         // response.sendRedirect("/user/login");
+        //     });
+        //     // 접근 거부 예외 처리
+        //     exception.accessDeniedHandler((request, response, accessDeniedException) -> {
+        //         // TODO
+        //     });
+        // });
 
         return http.build();
     }
 
-    // 로그인 성공 Bean
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        AuthenticationSuccessHandler successHandler = new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                    Authentication authentication) throws IOException, ServletException {
-                // TODO 로그인 성공 시, 쿠키 발급 등
-            }
-        };
-        return successHandler;
-    }
+    // // 로그인 성공 Bean
+    // @Bean
+    // public AuthenticationSuccessHandler successHandler() {
+    //     AuthenticationSuccessHandler successHandler = new AuthenticationSuccessHandler() {
+    //         @Override
+    //         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+    //                 Authentication authentication) throws IOException, ServletException {
+    //             // TODO 로그인 성공 시, 쿠키 발급 등
+    //         }
+    //     };
+    //     return successHandler;
+    // }
 
-    // 로그인 실패 Bean
-    @Bean
-    public AuthenticationFailureHandler failureHandler() {
-        AuthenticationFailureHandler failureHandler = new AuthenticationFailureHandler() {
-            @Override
-            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                    AuthenticationException exception) throws IOException, ServletException {
-                // TODO 로그인 실패 시
-            }
-        };
-        return failureHandler;
-    }
+    // // 로그인 실패 Bean
+    // @Bean
+    // public AuthenticationFailureHandler failureHandler() {
+    //     AuthenticationFailureHandler failureHandler = new AuthenticationFailureHandler() {
+    //         @Override
+    //         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+    //                 AuthenticationException exception) throws IOException, ServletException {
+    //             // TODO 로그인 실패 시
+    //         }
+    //     };
+    //     return failureHandler;
+    // }
 
-    // Oauth2 로그인 성공 Bean
-    public AuthenticationSuccessHandler oauth2SuccessHandler() {
-        AuthenticationSuccessHandler successHandler = new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                    Authentication authentication) throws IOException, ServletException {
-                // TODO Oauth2 로그인 성공 시, 쿠키 발급 등
-            }
-        };
-        return successHandler;
-    }
+    // // Oauth2 로그인 성공 Bean
+    // @Bean
+    // public AuthenticationSuccessHandler oauth2SuccessHandler() {
+    //     AuthenticationSuccessHandler successHandler = new AuthenticationSuccessHandler() {
+    //         @Override
+    //         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+    //                 Authentication authentication) throws IOException, ServletException {
+    //             // TODO Oauth2 로그인 성공 시, 쿠키 발급 등
+    //         }
+    //     };
+    //     return successHandler;
+    // }
 
-    // RememberMe Bean
-    @Bean
-    public PersistentTokenRepository tokenRepository() {
-        JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
-        // TODO 다음 경고를 우회하기 위해 if문 추가
-        // 타당성 검증 필요
-        // Null type safety: The expression of type 'DataSource' needs unchecked
-        // conversion to conform to '@NonNull DataSource'Java(16778128)
-        if (dataSource != null) {
-            jdbcTokenRepositoryImpl.setDataSource(dataSource);
-        }
-        return jdbcTokenRepositoryImpl;
-    }
+    // // RememberMe Bean
+    // @Bean
+    // public PersistentTokenRepository tokenRepository() {
+    //     JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
+    //     // TODO 아래 경고를 우회하기 위해 if문 추가
+    //     // 타당성 검증 필요
+    //     // Null type safety: The expression of type 'DataSource' needs unchecked
+    //     // conversion to conform to '@NonNull DataSource'Java(16778128)
+    //     if (dataSource != null) {
+    //         jdbcTokenRepositoryImpl.setDataSource(dataSource);
+    //     }
+    //     return jdbcTokenRepositoryImpl;
+    // }
 
-    // 로그아웃 Bean
-    @Bean
-    public LogoutHandler logoutHandler() {
-        LogoutHandler logoutHandler = new LogoutHandler() {
-            @Override
-            public void logout(HttpServletRequest request, HttpServletResponse response,
-                    Authentication authentication) {
-                // TODO 로그아웃 성공 시
-            }
-        };
-        return logoutHandler;
-    }
+    // // 로그아웃 Bean
+    // @Bean
+    // public LogoutHandler logoutHandler() {
+    //     LogoutHandler logoutHandler = new LogoutHandler() {
+    //         @Override
+    //         public void logout(HttpServletRequest request, HttpServletResponse response,
+    //                 Authentication authentication) {
+    //             // TODO 로그아웃 시
+    //         }
+    //     };
+    //     return logoutHandler;
+    // }
 
-    // 로그아웃 성공 Bean
-    public LogoutSuccessHandler logoutSuccessHandler() {
-        LogoutSuccessHandler logoutSuccessHandler = new LogoutSuccessHandler() {
-            @Override
-            public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                    Authentication authentication) throws IOException, ServletException {
-                // TODO 로그아웃 성공 시, 쿠키 제거 등
-            }
-        };
-        return logoutSuccessHandler;
-    }
+    // // 로그아웃 성공 Bean
+    // @Bean
+    // public LogoutSuccessHandler logoutSuccessHandler() {
+    //     LogoutSuccessHandler logoutSuccessHandler = new LogoutSuccessHandler() {
+    //         @Override
+    //         public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+    //                 Authentication authentication) throws IOException, ServletException {
+    //             // TODO 로그아웃 성공 시, 쿠키 제거 등
+    //         }
+    //     };
+    //     return logoutSuccessHandler;
+    // }
+
+    // @Bean
+    // public ClientRegistrationRepository clientRegistrationRepository() {
+    //     return null;
+    // }
 
     // 비밀번호 암호화를 위한 Blow-fish 암호화 알고리즘 등록
     @Bean
