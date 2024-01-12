@@ -2,16 +2,25 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>탐나주</title>
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
+    <link rel="stylesheet" th:href="@{/mainPage/stylesheets/index.css}">
 </head>
 <body>
-    <th:block th:include="fragment :: common"></th:block>
-    <th:block th:include="fragment :: header"></th:block>
+    <th:block th:replace="~{fragment.html :: common}"></th:block>
+    <th:block th:replace="~{fragment.html :: header}"></th:block>
     <main class="main-container">
-        main 자리
+        <!-- section1 -->
+        <div class="main-img-container">
+            <img src="">
+            <div></div>
+        </div>
+        <!-- section2 -->
+        <!-- section3 -->
+        <!-- section4 -->
     </main>
-    <th:block th:include="fragment :: footer"></th:block>
+    <th:block th:replace="~{fragment.html :: footer}"></th:block>
 </body>
 
 </html>
