@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>탐나주</title>
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
 </head>
-
 <body>
+    <th:block th:replace="~{fragments.html :: common}"></th:block>
     <th:block th:replace="~{fragment :: header}"></th:block>
-    <main class="spring">
+    <main id="mainContainer" class="spring">
         main 자리
     </main>
     <th:block th:replace="~{fragment :: footer}"></th:block>
