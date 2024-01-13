@@ -13,11 +13,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.tamnaju.dev.configs.auth.OAuth2UserService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
     private DataSource dataSource;
+
+    public final OAuth2UserService oAuth2UserService;
+
+    @Autowired
+    SecurityConfig(DataSource dataSource, OAuth2UserService oAuth2UserService) {
+        this.dataSource = dataSource;
+        this.oAuth2UserService = oAuth2UserService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
