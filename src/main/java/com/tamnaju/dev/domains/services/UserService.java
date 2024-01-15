@@ -25,7 +25,7 @@ public class UserService {
         UserEntity userEntity = UserEntity.userDtoToUserEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         // PK에 대한 중복 여부 검증
-        if (userMapper.findUserByEmail(userEntity.getEmail()) != null) {
+        if (userMapper.findUserById(userEntity.getEmail()) != null) {
             return UserJoinResult.FAILURE_DUPLICATE_EMAIL;
         }
         return userMapper.saveUser(userEntity) > 0
@@ -34,7 +34,7 @@ public class UserService {
     }
 
     public UserLoginResult selectUserByEmailAndPassword(UserDto userDto) {
-        UserEntity dbUser = userMapper.findUserByEmail(userDto.getEmail());
+        UserEntity dbUser = userMapper.findUserById(userDto.getEmail());
         return passwordEncoder.matches(userDto.getPassword(), dbUser.getPassword())
                 ? UserLoginResult.SUCCESS
                 : UserLoginResult.FAILURE;
