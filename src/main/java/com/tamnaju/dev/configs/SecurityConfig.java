@@ -1,5 +1,7 @@
 package com.tamnaju.dev.configs;
 
+import java.io.IOException;
+
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
@@ -8,9 +10,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.tamnaju.dev.configs.oAuth2.OAuth2UserService;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -53,6 +62,8 @@ public class SecurityConfig {
         // Oauth2 로그인
         http.oauth2Login(oauth2Configurer -> {
             oauth2Configurer
+                    .loginPage("/user/login")
+                    .successHandler(oAuth2SuccessHandler())
                     .userInfoEndpoint(userInfoEndpointConfig -> {
                         userInfoEndpointConfig.userService(oAuth2UserService);
                     });
@@ -124,18 +135,19 @@ public class SecurityConfig {
     // return failureHandler;
     // }
 
-    // // Oauth2 로그인 성공 Bean
-    // @Bean
-    // public AuthenticationSuccessHandler oAuth2SuccessHandler() {
-    //     return new AuthenticationSuccessHandler() {
-    //         @Override
-    //         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-    //                 Authentication authentication) throws IOException, ServletException {
-    //                     Cookie cookie = new Cookie(null, null);
-    //                     response.addCookie(cookie);
-    //         }
-    //     };
-    // }
+    // Oauth2 로그인 성공 Bean
+    @Bean
+    public AuthenticationSuccessHandler oAuth2SuccessHandler() {
+        return new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request,
+                    HttpServletResponse response,
+                    Authentication authentication) throws IOException, ServletException {
+                Cookie cookie = new Cookie(null, null);
+                response.addCookie(cookie);
+            }
+        };
+    }
 
     // // RememberMe Bean
     // @Bean

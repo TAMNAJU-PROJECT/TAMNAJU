@@ -1,7 +1,10 @@
 package com.tamnaju.dev.configs.oAuth2;
 
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -27,6 +30,8 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
+
         // provider에 따른 조건 분기
         String provider = userRequest.getClientRegistration().getRegistrationId();
         Map<String, Object> attributes;
@@ -50,21 +55,23 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         // DB에 user 정보 여부에 따른 처리
         UserDto userDto;
-        UserEntity dbUserEntity = userMapper.findUserById(providerId);
+        UserEntity dbUserEntity = userMapper.findUserByProviderId(providerId);
         if (dbUserEntity == null) {
             UserEntity userEntity = UserEntity.builder()
-                    .id(providerId)
+                    .id(providerId.substring(0, 33))
                     .password(passwordEncoder.encode(oAuth2User.hashCode() + ""))
                     .provider(provider)
                     .providerId(providerId)
                     .build();
             userMapper.saveUser(userEntity);
+            // DB에 없을 시, 새로 생성한 User 정보 할당
             userDto = UserDto.userEntityToUserDto(userEntity);
         } else {
+            // DB에 있을 시, 기존 User 정보 할당
             userDto = UserDto.userEntityToUserDto(dbUserEntity);
         }
 
-        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.builder()
+        PrincipalDetails oAuth2UserInfo = PrincipalDetails.builder()
                 .userDto(userDto)
                 .attributes(attributes)
                 .accessToken(userRequest.getAccessToken().getTokenValue())

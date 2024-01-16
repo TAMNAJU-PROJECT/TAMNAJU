@@ -21,6 +21,7 @@ public class UserEntity {
     private String password;
     private LocalDate birth;
     private boolean isAdmin;
+
     private LocalDateTime registeredAt;
     private LocalDateTime deletedAt;
     private LocalDateTime suspendedAt;

@@ -3,33 +3,63 @@
 <mapper namespace="com.tamnaju.dev.domains.mappers.UserMapper">
     <insert id="saveUser"
             parameterType="com.tamnaju.dev.domains.entities.UserEntity">
-        INSERT INTO `tamnaju_db`.`users` (`email`,
+        INSERT INTO `tamnaju_db`.`users` (`id`,
+                                          `email`,
                                           `name`,
-                                          `nickname`,
                                           `password`,
                                           `birth`,
-                                          `admin_flag`)
-        VALUES (#{email},
+                                          `isAdmin`,
+                                          `registered_at`,
+                                          `deleted_at`,
+                                          `suspended_at`,
+                                          `provider`,
+                                          `provider_id`)
+        VALUES (#{id},
+                #{email},
                 #{name},
-                #{nickname},
                 #{password},
                 #{birth},
-                #{isAdmin})
+                #{isAdmin},
+                #{registeredAt},
+                #{deletedAt},
+                #{suspendedAt},
+                #{provider},
+                #{providerId})
     </insert>
 
-    <select id="findUserByEmail"
-            resultType="com.tamnaju.dev.domains.entities.UserEntity">
-        SELECT `email`         AS `email`,
+    <select id="findUserById"
+        resultType="com.tamnaju.dev.domains.entities.UserEntity">
+        SELECT `id`            AS `id`,
+               `email`         AS `email`,
                `name`          AS `name`,
-               `nickname`      AS `nickname`,
                `password`      AS `password`,
                `birth`         AS `birth`,
-               `admin_flag`    AS `isAdmin`,
+               `isAdmin`       AS `isAdmin`,
                `registered_at` AS `registeredAt`,
                `deleted_at`    AS `deletedAt`,
                `suspended_at`  AS `suspendedAt`
+               `provider`      AS `provider`
+               `provider_id`   AS `providerId`
         FROM `tamnaju_db`.`users`
-        WHERE BINARY `email` = #{email}
+        WHERE BINARY `id` = #{id}
+        LIMIT 1
+    </select>
+
+    <select id="findUserByProviderId"
+        resultType="com.tamnaju.dev.domains.entities.UserEntity">
+        SELECT `id`            AS `id`,
+               `email`         AS `email`,
+               `name`          AS `name`,
+               `password`      AS `password`,
+               `birth`         AS `birth`,
+               `isAdmin`       AS `isAdmin`,
+               `registered_at` AS `registeredAt`,
+               `deleted_at`    AS `deletedAt`,
+               `suspended_at`  AS `suspendedAt`
+               `provider`      AS `provider`
+               `provider_id`   AS `providerId`
+        FROM `tamnaju_db`.`users`
+        WHERE BINARY `provider_id` = #{providerId}
         LIMIT 1
     </select>
 </mapper>
