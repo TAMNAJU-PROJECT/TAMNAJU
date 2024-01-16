@@ -3,40 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>탐나주 - 회원가입</title>
+    <title>탐나주 - 로그인</title>
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
-    <link rel="stylesheet" th:href="@{/user/stylesheets/join.css}">
-    <script defer th:src="@{/user/scripts/join.js}"></script>
+    <link rel="stylesheet" th:href="@{/user/stylesheets/login.css}">
+    <script defer th:src="@{/user/scripts/login.js}"></script>
 </head>
 
 <body>
     <th:block th:replace="~{fragment :: header}"></th:block>
     <main class="spring">
-        <form id="joinForm">
+        <form id="loginForm">
             <label>
                 <span class="text">Email :</span>
                 <input name="email" type="email" placeholder="email을 입력해주세요.">
-            </label>
-            <label>
-                <span class="text">이름 :</span>
-                <input name="name" type="text" placeholder="이름을 입력해주세요.">
-            </label>
-            <label>
-                <span class="text">별명 :</span>
-                <input name="nickname" type="text" placeholder="별명을 입력해주세요.">
             </label>
             <label>
                 <span class="text">비밀번호 :</span>
                 <input name="password" type="password" placeholder="비밀번호를 입력해주세요">
             </label>
             <label>
-                <span class="text">생년월일 :</span>
-                <input name="birthStr" type="date">
-            </label>
-            <label>
-                <input type="submit" value="회원 가입">
+                <input type="submit" value="로그인">
             </label>
         </form>
+        <div class="container unauthenticated">
+            With GitHub: <a href="/user/login/oauth2/code/kakao">click here</a>
     </main>
     <th:block th:replace="~{fragment :: footer}"></th:block>
 </body>
