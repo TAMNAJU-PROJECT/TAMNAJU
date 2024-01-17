@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>제주도 날씨</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link th:href="@{/jejumap/stylesheets/weather.css}" rel="stylesheet">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a680393cb995830e22eb5f90362a606f&libraries=services"></script>
+    <!--    주소 좌표 받는 값 = &libraries=services-->
+    <script defer th:src="@{/jejumap/scripts/weather.js}"></script>
+</head>
+<body>
+<th:block th:replace="~{fragment.html :: common}"></th:block>
+<th:block th:replace="~{fragment.html :: header}"></th:block>
+
+<div id="map"></div>
+<div id="cover"></div>
+<div class="visible" id="info">
+    <div class="title-container">
+        <img class="close" alt="닫기" rel="close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoElEQVR4nO2WUQqAIBBE57TzVZ3DSxf9FASJueusBTnQp/seplPAyMg9CcAEfaZj9mMIYAWwCOHnzNm6YHkDrpRwwxUSzfAWCRncIyGHWyTC4DUS4fCSRDd4TqI7/Fqt2/FEVPe3BXjZ9ohvRzG5d95NgoUDFy7BitMeJkHDVZNL0HHPZRJsKJlmCQoazi1BYb2aJRjQ7SaJ9PZv+ci/sgM32VIN2RJOpwAAAABJRU5ErkJggg==">
+    </div>
+    <ul class="data-container">
+        <li class="data">
+            <h3 class="caption">지역명</h3>
+            <span class="value" rel="name">지역명 자리</span>
+        </li>
+        <li class="data">
+            <h3 class="caption">온도</h3>
+            <span class="value" rel="address">온도 자리</span>
+        </li>
+        <li class="data">
+            <h3 class="caption">날씨</h3>
+            <span class="value" rel="tel">날씨 자리</span>
+        </li>
+        <li class="data">
+            <h3 class="caption">설명</h3>
+            <span class="value" rel="description">설명 자리</span>
+        </li>
+        <li class="data">
+            <h3 class="caption">메뉴</h3>
+            <span class="value" rel="menu">메뉴 자리</span>
+        </li>
+        <li class="data">
+            <h3 class="caption">오시는 길(지하철)</h3>
+            <span class="value" rel="subway">오시는 길(지하철) 자리</span>
+        </li>
+        <li class="data">
+            <h3 class="caption">오시는 길(버스)</h3>
+            <span class="value" rel="bus">오시는 길(버스) 자리</span>
+        </li>
+    </ul>
+</div>
+
+<th:block th:replace="~{fragment.html :: footer}"></th:block>
+
+</body>
+</html>
