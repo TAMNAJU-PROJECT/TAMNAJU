@@ -1,14 +1,14 @@
 package com.tamnaju.dev.configs.oAuth2;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +29,12 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
+        Map<String, Object> attributes;
 
-        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
+        String provider = userRequest.getClientRegistration().getRegistrationId();
+        String providerId;
 
         // provider에 따른 조건 분기
-        String provider = userRequest.getClientRegistration().getRegistrationId();
-        Map<String, Object> attributes;
-        String providerId;
         switch (provider) {
             case "kakao":
                 attributes = (Map<String, Object>) oAuth2User.getAttributes().get("properties");
@@ -77,6 +76,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                 .accessToken(userRequest.getAccessToken().getTokenValue())
                 .build();
 
-        return oAuth2UserInfo;
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                oAuth2User.getAttributes(), "id");
     }
 }
