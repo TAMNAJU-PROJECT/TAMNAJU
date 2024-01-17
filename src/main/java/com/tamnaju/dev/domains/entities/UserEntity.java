@@ -1,7 +1,7 @@
 package com.tamnaju.dev.domains.entities;
 
-import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain.Strategy;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.tamnaju.dev.domains.dtos.UserDto;
 
@@ -15,25 +15,35 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserEntity {
+    private String id;
     private String email;
     private String name;
-    private String nickname;
-    private Strategy password;
+    private String password;
+    private LocalDate birth;
     private boolean isAdmin;
-    private DateTimeFormat registeredAt;
-    private DateTimeFormat deletedAt;
-    private DateTimeFormat suspendedAt;
 
-    // UserEntity를 UserDto로 변환하는 정적 메소드
-    public static UserDto userEntityToUserDto(UserEntity userEntity) {
-        return UserDto.builder()
-                .email(userEntity.getEmail())
-                .name(userEntity.getName())
-                .nickname(userEntity.getNickname())
-                .isAdmin(userEntity.isAdmin())
-                .registeredAt(userEntity.getRegisteredAt())
-                .deletedAt(userEntity.getDeletedAt())
-                .suspendedAt(userEntity.getSuspendedAt())
+    private LocalDateTime registeredAt;
+    private LocalDateTime deletedAt;
+    private LocalDateTime suspendedAt;
+
+    // OAUTH2
+    private String provider;
+    private String providerId;
+
+    // UserDto를 UserEntity로 변환하는 정적 메소드
+    public static UserEntity userDtoToUserEntity(UserDto userDto) {
+        return UserEntity.builder()
+                .id(userDto.getId())
+                .email(userDto.getEmail())
+                .name(userDto.getName())
+                .password(userDto.getPassword())
+                .birth(userDto.getBirth())
+                .isAdmin(userDto.isAdmin())
+                .registeredAt(userDto.getRegisteredAt())
+                .deletedAt(userDto.getDeletedAt())
+                .suspendedAt(userDto.getSuspendedAt())
+                .provider(userDto.getProvider())
+                .providerId(userDto.getProviderId())
                 .build();
     }
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>탐나주</title>
+    <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
+    <link rel="stylesheet" th:href="@{/mainPage/stylesheets/index.css}">
+</head>
+<body>
+    <main>
+        <th:block th:replace="~{fragment.html :: common}"></th:block>
+        <th:block th:replace="~{fragment.html :: header}"></th:block>
+        <div class="main-img-container">
+            <img class="main-image" alt="" th:src="@{/images/mainImage.jpeg}">
+        </div>
+        <div class="main-container">
+            <!-- section1 -->
+            <div class="section1">
+                날씨정보
+            </div>
+            <!-- section2 -->
+            <div class="spring"></div>
+            <div class="section2">
+                로그인 유도 영역
+            </div>
+            <!-- section3 -->
+            <!-- section4 -->
+        </div>
+    <th:block th:replace="~{fragment.html :: footer}"></th:block>
+    </main>
+</body>
+</html>

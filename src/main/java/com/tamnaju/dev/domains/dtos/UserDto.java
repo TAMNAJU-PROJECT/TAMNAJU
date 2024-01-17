@@ -1,6 +1,7 @@
 package com.tamnaju.dev.domains.dtos;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.tamnaju.dev.domains.entities.UserEntity;
 
@@ -16,37 +17,41 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserDto {
-    @Pattern(regexp = "^(?=[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}).{,50}$", message = "서버가 인식할 수 없는 형식의 Email입니다.")
+    @NotBlank
+    @Pattern(regexp = "^[\\dA-Za-z]{2,32}$", message = "숫자, 또는 영어로 된 32자 이하의 별명을 입력해야 합니다.")
+    private String id;
+    @Pattern(regexp = "^(?=[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}).{1,50}$", message = "서버가 인식할 수 없는 형식의 Email입니다.")
     private String email;
-
     @Pattern(regexp = "^[A-Za-z가-힣\\s]{2,10}$", message = "영어 또는 한글로 된 10자 이하의 이름을 입력해야 합니다.")
     private String name;
-
-    @Pattern(regexp = "^[A-Za-z가-힣\\s]{2,10}$", message = "영어 또는 한글로 된 10자 이하의 별명을 입력해야 합니다.")
-    private String nickname;
-
     @NotBlank
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,60}$", message = "영어 대소문자, 숫자 및 특수문자를 포함한 8자 이상의 비밀번호를 입력해야 합니다.")
     private String password;
-
+    private LocalDate birth;
     private boolean isAdmin;
 
-    private DateTimeFormat registeredAt;
+    private LocalDateTime registeredAt;
+    private LocalDateTime deletedAt;
+    private LocalDateTime suspendedAt;
 
-    private DateTimeFormat deletedAt;
+    // OAUTH2
+    private String provider;
+    private String providerId;
 
-    private DateTimeFormat suspendedAt;
-
-    // UserDto를 UserEntity로 변환하는 정적 메소드
-    public static UserEntity userDtoToUserEntity(UserDto userDto) {
-        return UserEntity.builder()
-                .email(userDto.getEmail())
-                .name(userDto.getName())
-                .nickname(userDto.getNickname())
-                .isAdmin(userDto.isAdmin())
-                .registeredAt(userDto.getRegisteredAt())
-                .deletedAt(userDto.getDeletedAt())
-                .suspendedAt(userDto.getSuspendedAt())
+    // UserEntity를 UserDto로 변환하는 정적 메소드
+    public static UserDto userEntityToUserDto(UserEntity userEntity) {
+        return UserDto.builder()
+                .id(userEntity.getId())
+                .email(userEntity.getEmail())
+                .name(userEntity.getName())
+                .password(userEntity.getPassword())
+                .birth(userEntity.getBirth())
+                .isAdmin(userEntity.isAdmin())
+                .registeredAt(userEntity.getRegisteredAt())
+                .deletedAt(userEntity.getDeletedAt())
+                .suspendedAt(userEntity.getSuspendedAt())
+                .provider(userEntity.getProvider())
+                .providerId(userEntity.getProviderId())
                 .build();
     }
 }
