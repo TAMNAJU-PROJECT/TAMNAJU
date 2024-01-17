@@ -1,5 +1,5 @@
-#HISTORY
-2024-01-17
+# HISTORY
+#### 2024-01-17
 ---
 - static 정적자원 경로 지정
   - WebMvcConfig에 정적자원경로 등록
