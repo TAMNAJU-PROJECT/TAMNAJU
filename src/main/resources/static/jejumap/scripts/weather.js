@@ -30,7 +30,7 @@ map.init = function(latitude, longitude) {
             const items = responseObject['data'];
             const geocoder = new kakao.maps.services.Geocoder();
             for (const item of items) {
-                geocoder.addressSearch(item['GNG_CS'], function(result, status){
+                geocoder.addressSearch(item['nx'], function(result, status){
                     if(status !== kakao.maps.services.Status.OK) {
                         return;
                     }
@@ -72,14 +72,11 @@ info.querySelector('[rel="close"]').onclick = function() {
 }
 
 info.show = (item) => {
-    info.querySelector('[rel="title"]').innerText = item['BZ_NM'];
-    info.querySelector('[rel="name"]').innerText = item['BZ_NM'];
-    info.querySelector('[rel="address"]').innerText = item['GNG_CS'];
-    info.querySelector('[rel="tel"]').innerText = item['TLNO'];
-    info.querySelector('[rel="description"]').innerHTML = item['SMPL_DESC'];
-    info.querySelector('[rel="menu"]').innerHTML = item['MNU'];
-    info.querySelector('[rel="subway"]').innerText = item['SBW'];
-    info.querySelector('[rel="bus"]').innerText = item['BUS'];
+    info.querySelector('[rel="temperature"]').innerText = item['TMP'];
+    info.querySelector('[rel="sky"]').innerText = item['SKY'];
+    info.querySelector('[rel="rain-probability"]').innerText = item['POP'];
+    info.querySelector('[rel="rain-style"]').innerText = item['PTY'];
+
 
     info.classList.add('visible');
 };
