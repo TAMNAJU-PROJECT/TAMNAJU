@@ -76,7 +76,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                 .accessToken(userRequest.getAccessToken().getTokenValue())
                 .build();
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")),
                 oAuth2User.getAttributes(), "id");
     }
 }

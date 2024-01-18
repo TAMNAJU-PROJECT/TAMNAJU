@@ -11,6 +11,6 @@ public class IndexController {
     // 적절한 판단인지 검토 필요
     @GetMapping("/")
     public String getIndex() {
-        return "mainPage/index";
+        return "index";
     }
 }
