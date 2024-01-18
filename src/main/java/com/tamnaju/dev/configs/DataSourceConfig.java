@@ -1,5 +1,7 @@
 package com.tamnaju.dev.configs;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -17,7 +19,7 @@ public class DataSourceConfig {
     ApplicationContext applicationContext;
     
     @Bean
-    public HikariDataSource dataSource() {
+    public DataSource dataSource() {
         // 연결된 DB의 상세 정보 등록
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl("jdbc:mariadb://localhost:3306/tamnaju_db");

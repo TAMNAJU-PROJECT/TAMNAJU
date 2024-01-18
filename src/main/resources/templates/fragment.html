@@ -3,15 +3,44 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/resources/stylesheets/common.css}">
 </head>
+<!-- common -->
+<!-- Notification,Loading Modal -->
+<th:block th:fragment="common">
+    <div id="dialog">
+        <div class="modal" rel="modal">
+            <div class="title" rel="title">제목</div>
+            <div class="content" rel="content">내용</div>
+            <div class="button-container" rel="buttonContainer">
+                <div class="button">버튼1</div>
+                <div class="button">버튼2</div>
+            </div>
+        </div>
+    </div>
+    <!-- Loading -->
+    <div id="loading">
+        <img alt="" class="icon" th:src="@{/images/loading.png}">
+        <span class="text">잠시만 기다려 주세요</span>
+    </div>
+</th:block>
 
+<!-- Header -->
 <header id="header" th:fragment="header">
-    header 자리
+    <div class="logo"><img alt="logo" src=""></div>
+    <div class="menu-bar">
+        <div class="menu"><a>공지사항</a></div>
+        <div class="menu"><a>로그인</a></div>
+    </div>
 </header>
 
+<!-- Footer -->
 <footer id="footer" th:fragment="footer">
-    footer 자리
+    <div class="content-container">
+        <div>(주)탐나주</div>
+
+
+        &copy; Copyright GC COMPANY Corp. All rights reserved.
+    </div>
 </footer>
 
 </html>
