@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -13,8 +13,8 @@
     <script defer th:src="@{/jejumap/scripts/weather.js}"></script>
 </head>
 <body>
-<th:block th:replace="~{fragment.html :: common}"></th:block>
-<th:block th:replace="~{fragment.html :: header}"></th:block>
+<th:block th:replace="~{fragments/common :: common}"></th:block>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
 
 
 <div id="map"></div>
@@ -47,7 +47,7 @@
     </ul>
 </div>
 
-<th:block th:replace="~{fragment.html :: footer}"></th:block>
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
 </body>
 </html>
