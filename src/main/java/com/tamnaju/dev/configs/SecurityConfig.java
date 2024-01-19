@@ -6,19 +6,26 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-
-import com.tamnaju.dev.configs.oAuth2.OAuth2UserService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -29,11 +36,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 public class SecurityConfig {
     private DataSource dataSource;
-    private OAuth2UserService oAuth2UserService;
 
-    SecurityConfig(DataSource dataSource, OAuth2UserService oAuth2UserService) {
+    SecurityConfig(DataSource dataSource) {
         this.dataSource = dataSource;
-        this.oAuth2UserService = oAuth2UserService;
     }
 
     @Bean
@@ -62,14 +67,14 @@ public class SecurityConfig {
                         .successHandler(successHandler())
                         .failureHandler(failureHandler()))
 
-                // Oauth2 로그인
-                .oauth2Login(oauth2Configurer -> oauth2Configurer
-                        .loginPage("/user/login").permitAll()
-                        .userInfoEndpoint(
-                                userInfoEndpointConfig -> userInfoEndpointConfig
-                                        .userService(oAuth2UserService))
-                        .successHandler(oAuth2SuccessHandler())
-                        .defaultSuccessUrl("/"))
+                // // Oauth2 로그인
+                // .oauth2Login(oauth2Configurer -> oauth2Configurer
+                //         .loginPage("/user/login").permitAll()
+                //         .userInfoEndpoint(
+                //                 userInfoEndpointConfig -> userInfoEndpointConfig
+                //                         .userService(oAuth2UserService))
+                //         .successHandler(oAuth2SuccessHandler())
+                //         .defaultSuccessUrl("/"))
 
                 // // RememberMe
                 // .rememberMe(rememberMe -> {
@@ -106,6 +111,32 @@ public class SecurityConfig {
                                 .sendRedirect("/error")));
 
         return http.build();
+    }
+
+    // 로그인 인증 Bean
+    @Bean
+    public AuthenticationManager authenticationManager(
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+
+        ProviderManager providerManager = new ProviderManager(authenticationProvider);
+        providerManager.setEraseCredentialsAfterAuthentication(false);
+
+        return providerManager;
+    }
+
+    // UserDetailsService Bean
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails userDetails = User.builder()
+                .username("username")
+                .password("password")
+                .roles("USER")
+                .build();
+        return new InMemoryUserDetailsManager(userDetails);
     }
 
     // 로그인 성공 Bean
@@ -191,8 +222,8 @@ public class SecurityConfig {
         return logoutSuccessHandler;
     }
 
-    // @Bean
-    // public ClientRegistrationRepository clientRegistrationRepository() {
-    // return null;
-    // }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 }

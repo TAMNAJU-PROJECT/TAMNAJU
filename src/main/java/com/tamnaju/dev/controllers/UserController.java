@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.results.UserJoinResult;
-import com.tamnaju.dev.domains.results.UserLoginResult;
 import com.tamnaju.dev.domains.services.UserService;
 
 import net.minidev.json.JSONObject;
@@ -60,19 +59,19 @@ public class UserController {
     public void getLogin() {
     }
 
-    // TODO session 등, 로그인 구현 필요
-    @PostMapping("/login")
-    @ResponseBody
-    public JSONObject postLogin(@Validated UserDto userDto,
-            BindingResult bindingResult) {
-        JSONObject responseObject = new JSONObject();
-        UserLoginResult userLoginResult;
-        if (bindingResult.hasFieldErrors("email") || bindingResult.hasFieldErrors("password")) {
-            userLoginResult = UserLoginResult.FAILURE;
-        } else {
-            userLoginResult = userService.selectUserByEmailAndPassword(userDto);
-        }
-        responseObject.put("result", userLoginResult.name().toLowerCase());
-        return responseObject;
-    }
+    // // TODO session 등, 로그인 구현 필요
+    // @PostMapping("/login")
+    // @ResponseBody
+    // public JSONObject postLogin(@Validated UserDto userDto,
+    //         BindingResult bindingResult) {
+    //     JSONObject responseObject = new JSONObject();
+    //     UserLoginResult userLoginResult;
+    //     if (bindingResult.hasFieldErrors("email") || bindingResult.hasFieldErrors("password")) {
+    //         userLoginResult = UserLoginResult.FAILURE;
+    //     } else {
+    //         userLoginResult = userService.selectUserByEmailAndPassword(userDto);
+    //     }
+    //     responseObject.put("result", userLoginResult.name().toLowerCase());
+    //     return responseObject;
+    // }
 }
