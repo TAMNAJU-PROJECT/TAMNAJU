@@ -6,7 +6,6 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -14,7 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -40,82 +38,72 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // TODO CSRF 비활성화, 추후 활성화 여부 판단 필요
-        http.csrf(AbstractHttpConfigurer::disable);
+        http
+                // TODO CSRF 비활성화, 추후 활성화 여부 판단 필요
+                .csrf(AbstractHttpConfigurer::disable)
 
-        // TODO session 무효화, 추후 활성화 여부 판단 필요
-        http.sessionManagement(session -> {
-            session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        });
+                // TODO session 무효화, 추후 활성화 여부 판단 필요
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-        // 특정 URL에 대한 접근 권한 설정
-        http.authorizeHttpRequests(authorizeHttpRequests -> {
-            authorizeHttpRequests
-                    .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                    .requestMatchers("/", "images/**", "/mainPage/**", "/stylesheets/**").permitAll()
-//                    .requestMatchers("/user/login").permitAll()
-                    .requestMatchers("/user/**").permitAll()
-                    .requestMatchers("/notice/write").hasRole("ADMIN")
-                    .anyRequest().authenticated();
-        });
+                // 특정 URL에 대한 접근 권한 설정
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        // TODO 로그인 하지 않은 사용자에게만 로그인 페이지 접근 허용
+                        .requestMatchers("/user/login", "/user/login/**").permitAll()
+                        .requestMatchers("/user/**", "/notice/**").permitAll()
+                        // 최상위 경로와 추가 자원 허용
+                        .requestMatchers("/", "images/**", "/js/**", "/css/**").permitAll()
+                        .requestMatchers("/notice/write").hasRole("ADMIN")
+                        .anyRequest().authenticated())
 
-        // 로그인
-        http.formLogin(login -> {
-            login
-                    .permitAll()
-                    .loginPage("/user/login")
-                    .successHandler(successHandler())
-                    .failureHandler(failureHandler());
-        });
+                // 로그인
+                .formLogin(login -> login
+                        .loginPage("/user/login").permitAll()
+                        .successHandler(successHandler())
+                        .failureHandler(failureHandler()))
 
-        // Oauth2 로그인
-        http.oauth2Login(oauth2Configurer -> {
-            oauth2Configurer
-                    .loginPage("/user/login")
-                    .userInfoEndpoint(userInfoEndpointConfig -> {
-                        userInfoEndpointConfig.userService(oAuth2UserService);
-                    })
-                    .successHandler(oAuth2SuccessHandler())
-                    .defaultSuccessUrl("/");
-        });
+                // Oauth2 로그인
+                .oauth2Login(oauth2Configurer -> oauth2Configurer
+                        .loginPage("/user/login").permitAll()
+                        .userInfoEndpoint(
+                                userInfoEndpointConfig -> userInfoEndpointConfig
+                                        .userService(oAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler())
+                        .defaultSuccessUrl("/"))
 
-        // // RememberMe
-        // http.rememberMe(rememberMe -> {
-        // rememberMe
-        // .key("rememberMe")
-        // .rememberMeParameter("remember-me")
-        // .alwaysRemember(false)
-        // .tokenValiditySeconds(60 * 60 * 24) // 60초 * 60분 * 24시간
-        // .tokenRepository(tokenRepository());
-        // });
+                // // RememberMe
+                // .rememberMe(rememberMe -> {
+                // rememberMe
+                // .key("rememberMe")
+                // .rememberMeParameter("remember-me")
+                // .alwaysRemember(false)
+                // .tokenValiditySeconds(60 * 60 * 24) // 60초 * 60분 * 24시간
+                // .tokenRepository(tokenRepository());
+                // })
 
-        // 로그아웃
-        http.logout(logout -> {
-            logout
-                    .permitAll()
-                    .logoutUrl("/user/logout")
-                    .addLogoutHandler(logoutHandler())
-                    .logoutSuccessHandler(logoutSuccessHandler())
-                    .deleteCookies("") // TODO 제거할 token key 추가 예정
-                    .invalidateHttpSession(true);
-        });
+                // 로그아웃
+                .logout(logout -> logout
+                        .permitAll()
+                        .logoutUrl("/user/logout")
+                        .addLogoutHandler(logoutHandler())
+                        .logoutSuccessHandler(logoutSuccessHandler())
+                        // TODO 제거할 token key 추가 예정
+                        .deleteCookies("")
+                        .invalidateHttpSession(true))
 
-        // 예외처리
-        http.exceptionHandling(exception -> {
-            // 인증 진입점 리다이렉션
-            exception.authenticationEntryPoint((request, response, authException) -> {
-                response.sendRedirect("/user/login?error=" + authException.getMessage());
-            });
-            // 접근 거부 예외 처리
-            exception.accessDeniedHandler(new AccessDeniedHandler() {
-                @Override
-                public void handle(HttpServletRequest request, HttpServletResponse response,
-                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
-                    response.sendRedirect("/error");
-                }
-            });
-        });
+                // password 수정 endpoint 지정
+                .passwordManagement(passwordManagement -> passwordManagement
+                        .changePasswordPage("/user/password"))
+
+                // 예외처리
+                .exceptionHandling(exception ->
+                        // 인증 진입점 리다이렉션
+                        exception
+                                .authenticationEntryPoint((request, response, authException) -> response
+                                        .sendRedirect("/user/login?error=" + authException.getMessage()))
+                                // 접근 거부 예외 처리
+                                .accessDeniedHandler((request, response, accessDeniedException) -> response
+                                        .sendRedirect("/error")));
 
         return http.build();
     }
@@ -126,8 +114,8 @@ public class SecurityConfig {
         AuthenticationSuccessHandler successHandler = new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request,
-                    HttpServletResponse response,
-                    Authentication authentication) throws IOException, ServletException {
+                                                HttpServletResponse response,
+                                                Authentication authentication) throws IOException, ServletException {
                 // TODO 로그인 성공 시, 쿠키 발급 등
             }
         };
@@ -140,8 +128,8 @@ public class SecurityConfig {
         AuthenticationFailureHandler failureHandler = new AuthenticationFailureHandler() {
             @Override
             public void onAuthenticationFailure(HttpServletRequest request,
-                    HttpServletResponse response,
-                    AuthenticationException exception) throws IOException, ServletException {
+                                                HttpServletResponse response,
+                                                AuthenticationException exception) throws IOException, ServletException {
                 // TODO 로그인 실패 시
             }
         };
@@ -154,8 +142,8 @@ public class SecurityConfig {
         return new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request,
-                    HttpServletResponse response,
-                    Authentication authentication) throws IOException, ServletException {
+                                                HttpServletResponse response,
+                                                Authentication authentication) throws IOException, ServletException {
                 Cookie cookie = new Cookie(null, null);
                 response.addCookie(cookie);
             }
@@ -183,7 +171,7 @@ public class SecurityConfig {
         LogoutHandler logoutHandler = new LogoutHandler() {
             @Override
             public void logout(HttpServletRequest request, HttpServletResponse response,
-                    Authentication authentication) {
+                               Authentication authentication) {
                 // TODO 로그아웃 시
             }
         };
@@ -196,7 +184,7 @@ public class SecurityConfig {
         LogoutSuccessHandler logoutSuccessHandler = new LogoutSuccessHandler() {
             @Override
             public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                    Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException, ServletException {
                 // TODO 로그아웃 성공 시, 쿠키 제거 등
             }
         };
