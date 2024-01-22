@@ -79,6 +79,10 @@ public class UserController {
 
 
 
+    @GetMapping("/recoverEmail")
+    public void getRecoverEmail() {
+
+    }
 
     @GetMapping("/register")
     public void getRegister() {
