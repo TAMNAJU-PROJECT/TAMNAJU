@@ -2,15 +2,13 @@ package com.tamnaju.dev.controllers;
 
 import java.time.LocalDate;
 
+import com.tamnaju.dev.domains.entities.UserEntity;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.results.UserJoinResult;
@@ -18,6 +16,7 @@ import com.tamnaju.dev.domains.results.UserLoginResult;
 import com.tamnaju.dev.domains.services.UserService;
 
 import net.minidev.json.JSONObject;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -77,9 +76,23 @@ public class UserController {
 //        return responseObject;
 //    }
 
+
+
+
+
     @GetMapping("/register")
     public void getRegister() {
 
     }
 
+    @GetMapping("/resetPassword")
+    public void getResetPassword() {
+
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public void AllExceptionFunc(Exception e){
+        System.out.println(e);
+    }
 }
