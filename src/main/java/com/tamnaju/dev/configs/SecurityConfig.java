@@ -26,6 +26,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -56,10 +59,16 @@ public class SecurityConfig {
                         // TODO 로그인 하지 않은 사용자에게만 로그인 페이지 접근 허용
                         .requestMatchers("/user/login", "/user/login/**").permitAll()
                         .requestMatchers("/user/**", "/notice/**").permitAll()
-                        // 최상위 경로와 추가 자원 허용
+                        // 최상위 경로와 추가 자원 경로 허용
                         .requestMatchers("/", "images/**", "/scripts/**", "/stylesheets/**").permitAll()
                         .requestMatchers("/notice/write").hasRole("ADMIN")
                         .anyRequest().authenticated())
+
+                .securityContext(securityContext -> securityContext
+                        .securityContextRepository(
+                                new DelegatingSecurityContextRepository(
+                                        new RequestAttributeSecurityContextRepository(),
+                                        new HttpSessionSecurityContextRepository())))
 
                 // 로그인
                 .formLogin(login -> login
@@ -69,12 +78,12 @@ public class SecurityConfig {
 
                 // // Oauth2 로그인
                 // .oauth2Login(oauth2Configurer -> oauth2Configurer
-                //         .loginPage("/user/login").permitAll()
-                //         .userInfoEndpoint(
-                //                 userInfoEndpointConfig -> userInfoEndpointConfig
-                //                         .userService(oAuth2UserService))
-                //         .successHandler(oAuth2SuccessHandler())
-                //         .defaultSuccessUrl("/"))
+                // .loginPage("/user/login").permitAll()
+                // .userInfoEndpoint(
+                // userInfoEndpointConfig -> userInfoEndpointConfig
+                // .userService(oAuth2UserService))
+                // .successHandler(oAuth2SuccessHandler())
+                // .defaultSuccessUrl("/"))
 
                 // // RememberMe
                 // .rememberMe(rememberMe -> {
