@@ -1,4 +1,4 @@
-package com.tamnaju.dev.configs.oAuth2;
+package com.tamnaju.dev.configs.jwt.oAuth2;
 
 import java.util.ArrayList;
 import java.util.Collection;

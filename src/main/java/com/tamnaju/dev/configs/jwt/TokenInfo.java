@@ -1,4 +1,4 @@
-package com.tamnaju.dev.configs.oAuth2.jwt;
+package com.tamnaju.dev.configs.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

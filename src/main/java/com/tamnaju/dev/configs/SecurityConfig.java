@@ -31,8 +31,8 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.tamnaju.dev.configs.oAuth2.jwt.TokenInfo;
-import com.tamnaju.dev.configs.oAuth2.jwt.TokenProvider;
+import com.tamnaju.dev.configs.jwt.TokenInfo;
+import com.tamnaju.dev.configs.jwt.TokenProvider;
 import com.tamnaju.dev.domains.entities.UserEntity;
 import com.tamnaju.dev.domains.mappers.UserMapper;
 
@@ -92,11 +92,10 @@ public class SecurityConfig {
                 // 로그아웃
                 .logout(logout -> logout
                         .permitAll()
-                        .logoutUrl("/user/logout")
+                        .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler())
                         .logoutSuccessHandler(logoutSuccessHandler())
-                        // TODO 제거할 token key 추가 예정
-                        .deleteCookies("")
+                        .deleteCookies(TokenProvider.AUTHORITIES_KEY)
                         .invalidateHttpSession(true))
 
                 // password 수정 endpoint 지정
@@ -104,8 +103,8 @@ public class SecurityConfig {
                         .changePasswordPage("/user/password"))
 
                 // 예외처리
-                .exceptionHandling(exception ->
-                exception
+                .exceptionHandling(exception -> exception
+                        // 권한 부족 예외 처리
                         .authenticationEntryPoint((request, response, authException) -> response
                                 .sendRedirect("/login?error=" + authException.getMessage()))
                         // 접근 거부 예외 처리
