@@ -15,3 +15,11 @@ CREATE TABLE IF NOT EXISTS `tamnaju_db`.`users` (
     `provider_id` VARCHAR(20) NULL,
     CONSTRAINT PRIMARY KEY (`email`)
 );
+
+CREATE TABLE IF NOT EXISTS `tamnaju_db`.`signature` (
+    `key_byte` VARBINARY(32) NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    CONSTRAINT PRIMARY KEY (`key_byte`)
+);
+
+DROP TABLE tamnaju_db.signature;
