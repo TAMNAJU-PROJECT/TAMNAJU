@@ -14,8 +14,8 @@
     <script defer th:src="@{/scripts/user/register.js}"></script>
 </head>
 <body>
-<th:block th:replace="~{fragments/common :: common}"></th:block>
-<th:block th:replace="~{fragments/header :: header}"></th:block>
+<th:block th:replace="~{fragments :: common}"></th:block>
+<th:block th:replace="~{fragments :: header}"></th:block>
 <div id="addressFind">
     <img alt="X" class="close" rel="close" th:src="@{/images/close.png}">
     <div class="modal"></div>
@@ -143,7 +143,7 @@
         <a class="button complete" th:href="@{/user/login}">로그인하러 가기</a>
     </div>
 </form>
-<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 
 </body>
 </html>

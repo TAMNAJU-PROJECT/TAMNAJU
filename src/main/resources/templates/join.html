@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <title>탐나주 - 회원가입</title>
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
-    <link rel="stylesheet" th:href="@{/stylesheets/user/join.css}">
-    <script defer th:src="@{/scripts/user/join.js}"></script>
+    <link rel="stylesheet" th:href="@{/stylesheets/join.css}">
+    <script defer th:src="@{/scripts/join.js}"></script>
 
 </head>
 
 <body>
-    <th:block th:replace="~{fragments/header :: header}"></th:block>
+    <th:block th:replace="~{fragments :: header}"></th:block>
     <main class="spring">
         <form id="joinForm">
             <label>
@@ -39,7 +39,7 @@
             </label>
         </form>
     </main>
-    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 
 </html>

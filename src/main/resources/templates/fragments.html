@@ -1,16 +1,16 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
 </head>
 
 <!-- common -->
 <!-- Notification,Loading Modal -->
-<th:block th:fragment="common">
+<div th:fragment="common">
     <div id="dialog">
         <div class="modal" rel="modal">
             <div class="title" rel="title">제목</div>
@@ -26,6 +26,23 @@
         <img alt="" class="icon" th:src="@{/images/loading.png}">
         <span class="text">잠시만 기다려 주세요</span>
     </div>
-</th:block>
+</div>
+
+<!-- Header -->
+<header id="header" th:fragment="header">
+    <div class="logo"><img alt="logo" src=""></div>
+    <div class="menu-bar">
+        <div class="menu"><a>공지사항</a></div>
+        <div class="menu"><a>로그인</a></div>
+    </div>
+</header>
+
+<!-- Footer -->
+<footer id="footer" th:fragment="footer">
+    <div class="content-container">
+        <div>(주)탐나주</div>
+        &copy; Copyright GC COMPANY Corp. All rights reserved.
+    </div>
+</footer>
 
 </html>
