@@ -4,8 +4,8 @@ CREATE SCHEMA IF NOT EXISTS `tamnaju_db`;
 CREATE TABLE IF NOT EXISTS `tamnaju_db`.`users` (
     `id` VARCHAR(32) NOT NULL,
     `email` VARCHAR(50) NOT NULL,
-    `name` VARCHAR(20) NOT NULL,
-    `password` VARCHAR(60) NULL,
+    `name` VARCHAR(20) NULL,
+    `password` VARCHAR(60) NOT NULL,
     `birth` DATE NOT NULL,
     `admin_flag` BOOLEAN NOT NULL DEFAULT FALSE,
     `registered_at` DATETIME NOT NULL DEFAULT NOW (),
@@ -21,5 +21,3 @@ CREATE TABLE IF NOT EXISTS `tamnaju_db`.`signature` (
     `created_at` DATETIME NOT NULL,
     CONSTRAINT PRIMARY KEY (`key_byte`)
 );
-
-DROP TABLE tamnaju_db.signature;

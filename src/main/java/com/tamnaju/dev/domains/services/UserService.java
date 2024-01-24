@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.entities.UserEntity;
 import com.tamnaju.dev.domains.mappers.UserMapper;
-import com.tamnaju.dev.domains.results.UserJoinResult;
-import com.tamnaju.dev.domains.results.UserLoginResult;
+import com.tamnaju.dev.domains.results.user.UserJoinResult;
+import com.tamnaju.dev.domains.results.user.UserLoginResult;
 
 import net.minidev.json.JSONObject;
 
@@ -33,10 +33,14 @@ public class UserService {
                 : UserJoinResult.FAILURE;
     }
 
-    public UserLoginResult selectUserByEmailAndPassword(UserDto userDto) {
+    public UserLoginResult selectUserByIdAndPassword(UserDto userDto) {
         UserEntity dbUser = userMapper.findUserById(userDto.getEmail());
-        return passwordEncoder.matches(userDto.getPassword(), dbUser.getPassword())
-                ? UserLoginResult.SUCCESS
-                : UserLoginResult.FAILURE;
+
+        if (passwordEncoder.matches(userDto.getPassword(), dbUser.getPassword())) {
+            userDto = UserDto.userEntityToUserDto(dbUser);
+            return UserLoginResult.SUCCESS;
+        } else {
+            return UserLoginResult.FAILURE;
+        }
     }
 }

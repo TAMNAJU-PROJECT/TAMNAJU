@@ -33,6 +33,12 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
                 return "ROLE_USER";
             }
         });
+        authorities.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "OAUTH2_USER";
+            }
+        });
         if (userDto.isAdmin()) {
             authorities.add(new GrantedAuthority() {
                 @Override

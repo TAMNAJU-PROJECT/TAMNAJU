@@ -42,7 +42,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -148,8 +150,13 @@ public class SecurityConfig {
             public void onAuthenticationSuccess(HttpServletRequest request,
                     HttpServletResponse response,
                     Authentication authentication) throws IOException, ServletException {
-                // TODO 로그인 성공 시, 쿠키 발급 등
-                response.sendRedirect("/");
+                TokenInfo tokenInfo = tokenProvider.generateToken(authentication);
+
+                Cookie cookie = new Cookie(TokenProvider.AUTHORITIES_KEY, tokenInfo.getAccessToken());
+                cookie.setPath("/");
+                cookie.setMaxAge((int) TokenProvider.REFRESH_TOKEN_EXPIRED_AT_SECONDS);
+
+                response.addCookie(cookie);
             }
         };
         return successHandler;
@@ -177,27 +184,30 @@ public class SecurityConfig {
             @Override
             protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-                String token = null;
                 String importAuth = null;
+                String token = null;
 
                 try {
                     if (request.getRequestURI().equals("/join")) {
                         Cookie[] cookies = request.getCookies();
-                        if (cookies != null) {
+
+                        if (cookies == null) {
+                            throw new Exception("쿠키가 존재하지 않습니다");
+                        } else {
                             importAuth = Arrays.stream(cookies)
                                     .filter(cookie -> cookie.getName().equals("importAuth")).findFirst()
                                     .map(cookie -> cookie.getValue())
                                     .orElse(null);
-                        }
-                        if (importAuth == null) {
-                            throw new Exception("쿠키가 존재하지 않습니다");
-                        } else {
-                            // cookie 에서 JWT token을 가져옵니다.
-                            token = Arrays.stream(request.getCookies())
-                                    .filter(cookie -> cookie.getName().equals(TokenProvider.AUTHORITIES_KEY))
-                                    .findFirst()
-                                    .map(cookie -> cookie.getValue())
-                                    .orElse(null);
+
+                            if (importAuth == null) {
+                                throw new Exception("쿠키가 존재하지 않습니다");
+                            } else {
+                                token = Arrays.stream(request.getCookies())
+                                        .filter(cookie -> cookie.getName().equals(TokenProvider.AUTHORITIES_KEY))
+                                        .findFirst()
+                                        .map(cookie -> cookie.getValue())
+                                        .orElse(null);
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -207,14 +217,12 @@ public class SecurityConfig {
 
                 try {
                     if (token == null) {
-                        // cookie 에서 JWT token을 가져옵니다.
                         token = Arrays.stream(request.getCookies())
                                 .filter(cookie -> cookie.getName().equals(TokenProvider.AUTHORITIES_KEY)).findFirst()
                                 .map(cookie -> cookie.getValue())
                                 .orElse(null);
                     }
                 } catch (Exception ignored) {
-                    // 일반적으로 접근하는 요청 URI에 대한 쿠키 예외는 무시한다..
                 }
 
                 if (token != null) {
@@ -228,7 +236,6 @@ public class SecurityConfig {
                         }
                     } catch (ExpiredJwtException e) // 토큰만료시 예외처리(쿠키 제거)
                     {
-                        System.out.println("[JWTAUTHORIZATIONFILTER] : ...ExpiredJwtException ...." + e.getMessage());
                         // 토큰 만료시 처리(Refresh-token으로 갱신처리는 안함-쿠키에서 제거)
                         Cookie cookie = new Cookie(TokenProvider.AUTHORITIES_KEY, null);
                         cookie.setMaxAge(0);
@@ -246,7 +253,7 @@ public class SecurityConfig {
     // Oauth2 로그인 성공 Bean
     @Bean
     public AuthenticationSuccessHandler oAuth2SuccessHandler() {
-        return new AuthenticationSuccessHandler() {
+        AuthenticationSuccessHandler successHandler = new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request,
                     HttpServletResponse response,
@@ -260,6 +267,7 @@ public class SecurityConfig {
                 response.addCookie(cookie);
             }
         };
+        return successHandler;
     }
 
     // // RememberMe Bean

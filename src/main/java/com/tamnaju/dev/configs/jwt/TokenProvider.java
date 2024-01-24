@@ -1,5 +1,6 @@
 package com.tamnaju.dev.configs.jwt;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -33,27 +34,29 @@ public class TokenProvider implements InitializingBean {
 
     private static final String GRANT_TYPE = "Bearer";
     private final String cipherAccessKey; // base64로 인코딩된 비밀 access key
-    private final String cipherRefreshKey; // base64로 인코딩된 비밀 refresh key
     private SecretKey accessKey; // 비밀 access key
     private SecretKey refreshKey; // 비밀 refresh key
 
     TokenProvider(
-            @Value("${jwt.secret-access}") String cipherAccessKey,
-            @Value("${jwt.secret-refresh}") String cipherRefreshKey) {
+            @Value("${jwt.secret-access}") String cipherAccessKey) {
         this.cipherAccessKey = cipherAccessKey;
-        this.cipherRefreshKey = cipherRefreshKey;
     }
 
-    // Bean 등록이 끝날 때, secret키를 디코딩하여서 key에 할당
+    // Bean 등록이 끝날 때, secret키를 디코딩해서 key에 할당
     @Override
     public void afterPropertiesSet() {
         byte[] accessKeyBytes = Decoders.BASE64.decode(cipherAccessKey);
         this.accessKey = Keys.hmacShaKeyFor(accessKeyBytes);
 
-        byte[] refreshKeyBytes = Decoders.BASE64.decode(cipherRefreshKey);
+        byte[] randomRefreshKey = new byte[256 / 8];
+        new SecureRandom().nextBytes(randomRefreshKey);
+        byte[] refreshKeyBytes = randomRefreshKey;
         this.refreshKey = Keys.hmacShaKeyFor(refreshKeyBytes);
     }
 
+    /**
+     * 토큰 생성
+     */
     public TokenInfo generateToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -86,14 +89,13 @@ public class TokenProvider implements InitializingBean {
                 .build();
     }
 
-    // 토큰으로 클레임을 만들고 이를 이용해 유저 객체를 만들어서 최종적으로 authentication 객체를 리턴
+    /**
+     * 토큰으로 클레임을 만들고 이를 이용해 유저 객체를 만들어서 최종적으로 authentication 객체를 리턴
+     */
     public Authentication getAuthentication(String accessToken) {
-        Claims claims = Jwts
-                .parserBuilder()
-                .setSigningKey(accessKey)
-                .build()
-                .parseClaimsJws(accessToken)
-                .getBody();
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(accessKey).build()
+                .parseClaimsJws(accessToken).getBody();
 
         Collection<? extends GrantedAuthority> authorities = Arrays
                 .stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -105,10 +107,14 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
     }
 
-    // 토큰의 유효성 검증을 수행
+    /**
+     * 토큰 유효성 검사
+     */
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(accessKey).build().parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(accessKey).build()
+                    .parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             // logger.info("잘못된 JWT 서명입니다.");

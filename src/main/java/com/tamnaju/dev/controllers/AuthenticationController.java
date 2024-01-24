@@ -2,22 +2,26 @@ package com.tamnaju.dev.controllers;
 
 import java.time.LocalDate;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tamnaju.dev.configs.jwt.TokenInfo;
+import com.tamnaju.dev.configs.jwt.TokenProvider;
 import com.tamnaju.dev.domains.dtos.UserDto;
-import com.tamnaju.dev.domains.results.UserJoinResult;
+import com.tamnaju.dev.domains.results.user.UserJoinResult;
 import com.tamnaju.dev.domains.services.UserService;
 
 import jakarta.validation.Valid;
@@ -27,10 +31,14 @@ import net.minidev.json.JSONObject;
 @RequestMapping(value = "/")
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
+    private TokenProvider tokenProvider;
     private UserService userService;
 
-    AuthenticationController(AuthenticationManager authenticationManager, UserService userService) {
+    AuthenticationController(AuthenticationManager authenticationManager,
+            TokenProvider tokenProvider,
+            UserService userService) {
         this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
         this.userService = userService;
     }
 
@@ -39,10 +47,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity postLogin(@RequestBody UserDto userDto) {
+    public ResponseEntity<TokenInfo> postLogin(@Valid UserDto userDto,
+            BindingResult bindingResult,
+            Model model) {
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken
                 .unauthenticated(userDto.getId(), userDto.getPassword());
         Authentication authenticationResponse = this.authenticationManager.authenticate(authenticationRequest);
+        SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
+        TokenInfo tokenInfo = tokenProvider.generateToken(authenticationResponse);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(TokenProvider.AUTHORITIES_KEY, "Bearer "+tokenInfo.getAccessToken());
+
         return null;
     }
 
