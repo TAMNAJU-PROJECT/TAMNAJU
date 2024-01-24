@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <title>탐나주 - 로그인</title>
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
-    <link rel="stylesheet" th:href="@{/stylesheets/user/login.css}">
-    <script defer th:src="@{/user/scripts/login.js}"></script>
+    <link rel="stylesheet" th:href="@{/stylesheets/login.css}">
+    <script defer th:src="@{/scripts/login.js}"></script>
 </head>
 
 <body>
     <th:block th:replace="~{fragment :: header}"></th:block>
     <main class="spring">
-        <form id="loginForm">
+        <form id="loginForm" th:action="@{/login}" method="post">
             <label>
-                <span class="text">Email :</span>
-                <input name="email" type="email" placeholder="email을 입력해주세요.">
+                <span class="text">ID :</span>
+                <input name="username" type="email" placeholder="ID를 입력해주세요">
             </label>
             <label>
                 <span class="text">비밀번호 :</span>
@@ -26,7 +26,7 @@
             </label>
         </form>
         <div class="container unauthenticated">
-            With GitHub: <a href="/user/login/oauth2/code/kakao">click here</a>
+            With GitHub: <a href="/oauth2/authorization/kakao">click here</a>
     </main>
     <th:block th:replace="~{fragment :: footer}"></th:block>
 </body>

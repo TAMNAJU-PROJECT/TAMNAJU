@@ -18,7 +18,7 @@ joinForm.onsubmit = function (e) {
 			return;
 		}
 		const responseObject = xhr.response;
-        console.log(typeof responseObject);
+		console.log(typeof responseObject);
 	};
 	xhr.open('POST', './join');
 	xhr.send(formData);
