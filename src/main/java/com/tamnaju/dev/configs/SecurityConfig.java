@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         // TODO 로그인 하지 않은 사용자에게만 로그인 페이지 접근 허용
                         .requestMatchers("/user/login", "/user/login/**").permitAll()
+                        .requestMatchers("/jejumap/**").permitAll()
                         .requestMatchers("/user/**", "/notice/**").permitAll()
                         // 최상위 경로와 추가 자원 허용
                         .requestMatchers("/", "images/**", "/js/**", "/css/**").permitAll()

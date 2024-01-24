@@ -14,11 +14,11 @@ map.init = function(latitude, longitude) {
     // getCurrentPosition 은 논 블러킹(Non blocking)
 
 
-      const option = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667),
-          level: 8 //확대, 축소 레벨
-      };
-      map.instance = new kakao.maps.Map(map, option);
+    const option = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 8 //확대, 축소 레벨
+    };
+    map.instance = new kakao.maps.Map(map, option);
 
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -58,8 +58,7 @@ map.init = function(latitude, longitude) {
             location.reload();
         }
     };
-    xhr.open('GET', 'https://api.visitjeju.net/vsjApi/contents/searchList?apiKey=0hqh4hlsxan1bhv8&locale=kr'); // 테스트용으로 제주도 관광지로 테스트.
-    // xhr.open('GET', 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=hFAsHSPD%2BAwBzzeNDkOBJTRQMZrl%2B7He3Xb6y8RGldoSqs1MsVo9uTpcWvFw23oRbRMgUDEN3q%2FpHOocGTpopg%3D%3D&pageNo=1&numOfRows=100&dataType=JSON&base_date=20240122&base_time=0500&nx=55&ny=127');
+    xhr.open('GET', 'https://api.visitjeju.net/vsjApi/contents/searchList?apiKey=0hqh4hlsxan1bhv8&locale=kr');
     xhr.send();
 };
 
