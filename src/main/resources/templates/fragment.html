@@ -31,7 +31,11 @@
 <!-- Header -->
 <header id="header" th:fragment="header">
     <div class="header-container">
-        <div class="logo"><img alt="logo" th:src="@{/images/tamnaju-logo.png}"></div>
+        <div class="logo">
+            <a class="link" href="#">
+                <img class="logo-img" alt="logo" th:src="@{/images/tamnaju-logo.png}">
+            </a>
+        </div>
         <div class="menu-bar">
             <div class="menu"><a href="#">공지사항</a></div>
             <div class="menu"><a href="#">로그인</a></div>

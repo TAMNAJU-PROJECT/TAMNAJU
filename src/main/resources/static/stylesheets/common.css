@@ -230,10 +230,17 @@ a {
 }
 
 #header > .header-container > .logo {
-    background-color: #17202a;
+    /* background-color: #17202a; */
     width: 30vmin;
     height: 100%;
     overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#header > .header-container > .logo > .link > .logo-img {
+    width: 100%;
+    height: auto;
 }
 
 #header > .header-container > .menu-bar {
