@@ -1,11 +1,38 @@
 @charset "UTF-8";
 
 /* PC (해상도 1024px)*/
-
-main {
+#main {
     width: 100vw;
     height: 80rem;
-    background-color: #3498db;
+
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* background-color: #3498db; */
+}
+
+#main > .main-img-container {
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+#main > .main-img-container > .main-image {
+    filter: saturate(120%);
+    width: 100%;
+    height: auto;
+}
+
+#main > .main-img-container > .text-container {
+    color: orange;
+    position: absolute;
+    top: 10%;
+    left: 25%;
+    width: 50%;
+    height: 40%;
+
+    background-color: aqua;
 
     align-items: center;
     display: flex;
@@ -13,20 +40,47 @@ main {
     justify-content: flex-start;
 }
 
-main > .main-img-container {
+#main > .main-img-container > .category-container {
+    position: absolute;
+    top: 55%;
+    left: 0;
+
     width: 100%;
     height: 40%;
-    overflow: hidden;
+    /* background-color: violet; */
 }
 
-main > .main-img-container > .main-image {
-    transform: translateY(-20%);
+#main > .main-img-container > .category-container > .category {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
-    display: block;
+    height: 100%;
+
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #ffffff60;
 }
 
-main > .main-container {
+#main > .main-img-container > .category-container > .category > .list {
+    width: 20vmin; /* 뷰포트 너비 또는 높이의 20%로 설정하여 정사각형 유지 */
+    height: 20vmin;
+    border-radius: 1rem;
+    background-color: #ff8400; /* 배경색은 예시로 지정한 색상 */
+    margin: 2rem; /* 각 정사각형 간의 간격을 설정 */
+
+    transition-property: transform;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+}
+
+#main > .main-img-container > .category-container > .category > .list:hover {
+    transform: scale(1.1);
+}
+
+#main > .main-container {
     width: 90%;
     height: 100%;
     background-color: burlywood;
@@ -38,11 +92,11 @@ main > .main-container {
     justify-content: flex-start;
 }
 
-main > .main-container > .section2 {
+#main > .main-container > .section2 {
     width: 100%;
-    height: 30%;
+    height: 50%;
     background: lightpink;
-    margin-top: 2rem;
+    margin-top: 8rem;
 }
 
 main > .main-container > .section3 {
