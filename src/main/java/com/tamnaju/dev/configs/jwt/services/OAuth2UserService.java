@@ -1,18 +1,16 @@
-package com.tamnaju.dev.configs.jwt.oAuth2;
+package com.tamnaju.dev.configs.jwt.services;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Map;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.tamnaju.dev.configs.jwt.PrincipalDetails;
 import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.entities.UserEntity;
 import com.tamnaju.dev.domains.mappers.UserMapper;
@@ -34,23 +32,22 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        log.info("OAuth2UserService loadUser() oAuth2User :\n"
-                + oAuth2User.toString());
-
         Map<String, Object> attributes;
         String email;
+        String name;
         LocalDate birth;
         String provider = userRequest.getClientRegistration().getRegistrationId();
         String providerId;
 
-        log.info("OAuth2UserService loadUser() oAuth2User.getAttributes() :\n"
-                + oAuth2User.getAttributes());
+        log.info("[OAuth2UserService] loadUser() : step 1" +
+                "\n\tattributes : " + oAuth2User.getAttributes());
 
         // provider에 따른 조건 분기
         switch (provider) {
             case "kakao":
                 attributes = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
                 email = attributes.get("email").toString();
+                name = ((Map<String, String>) attributes.get("profile")).get("nickname");
                 birth = LocalDate.parse(attributes.get("birthyear").toString()
                         + "-" + attributes.get("birthday").toString()
                                 .substring(0, 2)
@@ -62,6 +59,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             case "naver":
                 attributes = (Map<String, Object>) oAuth2User.getAttributes().get("response");
                 email = "";
+                name = "";
                 birth = LocalDate.now();
                 providerId = attributes.get("id").toString();
                 break;
@@ -69,6 +67,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             case "google":
                 attributes = oAuth2User.getAttributes();
                 email = "";
+                name = "";
                 birth = LocalDate.now();
                 providerId = attributes.get("sub").toString();
                 break;
@@ -77,12 +76,11 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                 throw new OAuth2AuthenticationException("Unexpected provider");
         }
 
-        log.info("OAuth2UserService loadUser() email :\n"
-                + email);
-        log.info("OAuth2UserService loadUser() birth :\n"
-                + birth);
-        log.info("OAuth2UserService loadUser() providerId :\n"
-                + providerId);
+        log.info("[OAuth2UserService] loadUser() : step 2" +
+                "\n\temail : " + email +
+                "\n\tname : " + name +
+                "\n\tbirth : " + birth +
+                "\n\tproviderId : " + providerId);
 
         // DB에 user 정보 여부에 따른 처리
         UserDto userDto;
@@ -91,6 +89,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             UserEntity userEntity = UserEntity.builder()
                     .id(providerId)
                     .email(email)
+                    .name(name)
                     .password(passwordEncoder.encode(oAuth2User.hashCode() + "").substring(0, 60))
                     .birth(birth)
                     .provider(provider)
@@ -100,21 +99,22 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             // DB에 없을 시, 새로 생성한 User 정보 할당
             userDto = UserDto.userEntityToUserDto(userEntity);
 
-            log.info("OAuth2UserService loadUser() new member : " + providerId);
+            log.info("[OAuth2UserService] loadUser() : done" +
+                    "\n\tnew member : " + providerId);
         } else {
             // DB에 있을 시, 기존 User 정보 할당
             userDto = UserDto.userEntityToUserDto(dbUserEntity);
 
-            log.info("OAuth2UserService loadUser() old member : " + providerId);
+            log.info("[OAuth2UserService] loadUser() : done" +
+                    "\n\told member : " + providerId);
         }
 
-        PrincipalDetails oAuth2UserInfo = PrincipalDetails.builder()
+        PrincipalDetails principalDetails = PrincipalDetails.builder()
                 .userDto(userDto)
                 .attributes(attributes)
                 .accessToken(userRequest.getAccessToken().getTokenValue())
                 .build();
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("OAUTH2_USER")),
-                oAuth2User.getAttributes(), "id");
+        return principalDetails;
     }
 }

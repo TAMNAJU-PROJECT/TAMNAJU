@@ -7,7 +7,6 @@ import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.entities.UserEntity;
 import com.tamnaju.dev.domains.mappers.UserMapper;
 import com.tamnaju.dev.domains.results.user.UserJoinResult;
-import com.tamnaju.dev.domains.results.user.UserLoginResult;
 
 import net.minidev.json.JSONObject;
 
@@ -33,14 +32,13 @@ public class UserService {
                 : UserJoinResult.FAILURE;
     }
 
-    public UserLoginResult selectUserByIdAndPassword(UserDto userDto) {
-        UserEntity dbUser = userMapper.findUserById(userDto.getEmail());
+    public UserDto selectUserByIdAndPassword(UserDto userDto) {
+        UserEntity dbUser = userMapper.findUserById(userDto.getId());
 
         if (passwordEncoder.matches(userDto.getPassword(), dbUser.getPassword())) {
-            userDto = UserDto.userEntityToUserDto(dbUser);
-            return UserLoginResult.SUCCESS;
+            return UserDto.userEntityToUserDto(dbUser);
         } else {
-            return UserLoginResult.FAILURE;
+            return null;
         }
     }
 }

@@ -7,7 +7,6 @@
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
     <link rel="stylesheet" th:href="@{/stylesheets/user/login.css}">
     <script defer th:src="@{/scripts/user/login.js}"></script>
-
 </head>
 
 <body>
@@ -16,7 +15,7 @@
         <form id="loginForm" th:action="@{/login}" method="post">
             <label>
                 <span class="text">ID :</span>
-                <input name="username" type="email" placeholder="ID를 입력해주세요">
+                <input name="id" type="text" placeholder="ID를 입력해주세요">
             </label>
             <label>
                 <span class="text">비밀번호 :</span>
@@ -29,7 +28,6 @@
         <div class="container unauthenticated">
             With GitHub: <a href="/oauth2/authorization/kakao">click here</a>
         </div>
-
     </main>
     <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>

@@ -1,7 +1,6 @@
 package com.tamnaju.dev.configs;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
@@ -31,7 +30,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.tamnaju.dev.configs.jwt.TokenInfo;
+import com.tamnaju.dev.configs.jwt.TokenDto;
 import com.tamnaju.dev.configs.jwt.TokenProvider;
 import com.tamnaju.dev.domains.entities.UserEntity;
 import com.tamnaju.dev.domains.mappers.UserMapper;
@@ -48,10 +47,11 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    final UserMapper userMapper;
-    final TokenProvider tokenProvider;
+    private final UserMapper userMapper;
+    private final TokenProvider tokenProvider;
 
-    SecurityConfig(UserMapper userMapper, TokenProvider tokenProvider) {
+    SecurityConfig(UserMapper userMapper,
+            TokenProvider tokenProvider) {
         this.userMapper = userMapper;
         this.tokenProvider = tokenProvider;
     }
@@ -59,7 +59,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // TODO CSRF 비활성화, 추후 활성화 여부 판단 필요
                 .csrf(AbstractHttpConfigurer::disable)
 
                 // session 무효화
@@ -68,29 +67,31 @@ public class SecurityConfig {
 
                 // 특정 URL에 대한 접근 권한 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        // 최상위 경로와 추가 자원 허용
-                        .requestMatchers("/", "/*", "images/**", "/scripts/**", "/stylesheets/**").permitAll()
                         // TODO 로그인 하지 않은 사용자에게만 로그인 페이지 접근 허용
-                        .requestMatchers("/join", "/login", "/login/**").permitAll()
+                        .requestMatchers("/login").anonymous()
+                        // 최상위 경로와 추가 자원 허용
+                        .requestMatchers("/", "/images/**", "/scripts/**", "/stylesheets/**").permitAll()
                         .requestMatchers("/jejumap/**").permitAll()
                         .requestMatchers("/user/**", "/notice/**").permitAll()
                         .requestMatchers("/notice/write", "/notice/modify").hasRole("ADMIN")
                         .anyRequest().authenticated())
 
+                // JWT
+                .addFilterBefore(oncePerRequestFilter(), BasicAuthenticationFilter.class)
+
                 // 로그인
                 .formLogin(login -> login
                         .loginPage("/login").permitAll()
+                        .loginProcessingUrl("/login")
+                        .usernameParameter("id")
+                        .passwordParameter("password")
                         .successHandler(successHandler())
                         .failureHandler(failureHandler()))
-
-                // JWT
-                .addFilterBefore(oncePerRequestFilter(), BasicAuthenticationFilter.class)
 
                 // Oauth2 로그인
                 .oauth2Login(oauth2Configurer -> oauth2Configurer
                         .loginPage("/login").permitAll()
-                        .successHandler(oAuth2SuccessHandler())
-                        .defaultSuccessUrl("/"))
+                        .successHandler(oAuth2SuccessHandler()))
 
                 // 로그아웃
                 .logout(logout -> logout
@@ -98,7 +99,9 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler())
                         .logoutSuccessHandler(logoutSuccessHandler())
-                        .deleteCookies(TokenProvider.AUTHORITIES_KEY)
+                        .deleteCookies("JSESSIONID",
+                                TokenProvider.ACCESS_TOKEN,
+                                TokenProvider.REFRESH_TOKEN)
                         .invalidateHttpSession(true))
 
                 // password 수정 endpoint 지정
@@ -106,7 +109,6 @@ public class SecurityConfig {
                         .changePasswordPage("/user/password"))
 
                 // 예외처리
-
                 .exceptionHandling(exception -> exception
                         // 권한 부족 예외 처리
                         .authenticationEntryPoint((request, response, authException) -> response
@@ -150,16 +152,33 @@ public class SecurityConfig {
         AuthenticationSuccessHandler successHandler = new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request,
-
                     HttpServletResponse response,
                     Authentication authentication) throws IOException, ServletException {
-                TokenInfo tokenInfo = tokenProvider.generateToken(authentication);
+                log.info("[SecurityConfig] successfulAuthentication() :\n"
+                        + authentication.getPrincipal().toString());
 
-                Cookie cookie = new Cookie(TokenProvider.AUTHORITIES_KEY, tokenInfo.getAccessToken());
-                cookie.setPath("/");
-                cookie.setMaxAge((int) TokenProvider.REFRESH_TOKEN_EXPIRED_AT_SECONDS);
+                // token 생성
+                TokenDto tokenDto = tokenProvider.generateToken(authentication);
 
-                response.addCookie(cookie);
+                // access token 추가
+                Cookie accessToken = new Cookie(TokenProvider.ACCESS_TOKEN, tokenDto.getAccessToken());
+                accessToken.setMaxAge((int) TokenProvider.ACCESS_TOKEN_EXPIRED_AT_SECONDS);
+                accessToken.setPath("/");
+                response.addCookie(accessToken);
+
+                log.info("[SecurityConfig] successfulAuthentication() accessToken :\n"
+                        + accessToken.toString());
+
+                // refresh token 추가
+                Cookie refreshToken = new Cookie(TokenProvider.REFRESH_TOKEN, tokenDto.getRefreshToken());
+                refreshToken.setMaxAge((int) TokenProvider.REFRESH_TOKEN_EXPIRED_AT_SECONDS);
+                refreshToken.setPath("/");
+                response.addCookie(refreshToken);
+
+                log.info("[SecurityConfig] successfulAuthentication() refreshToken :\n"
+                        + refreshToken.toString());
+
+                response.sendRedirect("/");
             }
         };
         return successHandler;
@@ -173,7 +192,6 @@ public class SecurityConfig {
             public void onAuthenticationFailure(HttpServletRequest request,
                     HttpServletResponse response,
                     AuthenticationException exception) throws IOException, ServletException {
-                // TODO 로그인 실패 시
                 response.sendRedirect("/login");
             }
         };
@@ -187,65 +205,46 @@ public class SecurityConfig {
             @Override
             protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-                String importAuth = null;
-                String token = null;
-
+                String accessToken = null;
                 try {
-                    if (request.getRequestURI().equals("/join")) {
-                        Cookie[] cookies = request.getCookies();
-
-                        if (cookies == null) {
-                            throw new Exception("쿠키가 존재하지 않습니다");
-                        } else {
-                            importAuth = Arrays.stream(cookies)
-                                    .filter(cookie -> cookie.getName().equals("importAuth")).findFirst()
-                                    .map(cookie -> cookie.getValue())
-                                    .orElse(null);
-
-                            if (importAuth == null) {
-                                throw new Exception("쿠키가 존재하지 않습니다");
-                            } else {
-                                token = Arrays.stream(request.getCookies())
-                                        .filter(cookie -> cookie.getName().equals(TokenProvider.AUTHORITIES_KEY))
-                                        .findFirst()
-                                        .map(cookie -> cookie.getValue())
-                                        .orElse(null);
-                            }
-                        }
-                    }
+                    accessToken = Arrays.stream(request.getCookies())
+                            .filter(cookie -> cookie.getName().equals(TokenProvider.ACCESS_TOKEN)).findFirst()
+                            .map(cookie -> cookie.getValue())
+                            .orElse(null);
                 } catch (Exception e) {
-                    response.sendRedirect("/login?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
-                    return;
+                    log.info(e.getMessage());
                 }
 
-                try {
-                    if (token == null) {
-                        token = Arrays.stream(request.getCookies())
-                                .filter(cookie -> cookie.getName().equals(TokenProvider.AUTHORITIES_KEY)).findFirst()
-                                .map(cookie -> cookie.getValue())
-                                .orElse(null);
-                    }
-                } catch (Exception ignored) {
-                }
-
-                if (token != null) {
+                if (accessToken == null) {
+                    log.info("[SecurityConfig] oncePerRequestFilter()" +
+                            "\n\tRequestURL : " + request.getRequestURL() +
+                            "\n\tNo Cookie");
+                } else {
                     try {
-                        if (tokenProvider.validateToken(token)) {
-                            Authentication authentication = tokenProvider.getAuthentication(token);
+                        if (tokenProvider.validateToken(accessToken)) {
+                            Authentication authentication = tokenProvider.getAuthentication(accessToken);
                             UserEntity userEntity = userMapper.findUserById(authentication.getName());
                             if (userEntity != null) {
+                                log.info("[SecurityConfig] oncePerRequestFilter()" +
+                                        "\n\tRequestURL : " + request.getRequestURL() +
+                                        "\n\tUserEntity : " + userEntity);
+
                                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                            } else {
+                                log.error("[SecurityConfig] oncePerRequestFilter()" +
+                                        "\n\tRequestURL : " + request.getRequestURL() +
+                                        "\n\tUserEntity : Null");
                             }
                         }
-                    } catch (ExpiredJwtException e) // 토큰만료시 예외처리(쿠키 제거)
-                    {
-                        // 토큰 만료시 처리(Refresh-token으로 갱신처리는 안함-쿠키에서 제거)
-                        Cookie cookie = new Cookie(TokenProvider.AUTHORITIES_KEY, null);
+                    } catch (ExpiredJwtException e) {
+                        // TODO 토큰 만료시 처리(Refresh-token으로 갱신처리는 안함-쿠키에서 제거)
+                        Cookie cookie = new Cookie(TokenProvider.ACCESS_TOKEN, null);
                         cookie.setMaxAge(0);
                         response.addCookie(cookie);
                     } catch (Exception e2) {
                     }
                 }
+
                 filterChain.doFilter(request, response);
             }
         };
@@ -259,16 +258,27 @@ public class SecurityConfig {
         AuthenticationSuccessHandler successHandler = new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request,
-
                     HttpServletResponse response,
                     Authentication authentication) throws IOException, ServletException {
-                TokenInfo tokenInfo = tokenProvider.generateToken(authentication);
+                TokenDto tokenInfo = tokenProvider.generateToken(authentication);
 
-                Cookie cookie = new Cookie(TokenProvider.AUTHORITIES_KEY, tokenInfo.getAccessToken());
-                cookie.setPath("/");
-                cookie.setMaxAge((int) TokenProvider.REFRESH_TOKEN_EXPIRED_AT_SECONDS);
+                Cookie accessTokenCookie = new Cookie(TokenProvider.ACCESS_TOKEN,
+                        tokenInfo.getAccessToken());
+                accessTokenCookie.setPath("/");
+                accessTokenCookie.setMaxAge((int) TokenProvider.ACCESS_TOKEN_EXPIRED_AT_SECONDS);
+                response.addCookie(accessTokenCookie);
 
-                response.addCookie(cookie);
+                Cookie refreshTokenCookie = new Cookie(TokenProvider.REFRESH_TOKEN,
+                        tokenInfo.getRefreshToken());
+                refreshTokenCookie.setPath("/");
+                refreshTokenCookie.setMaxAge((int) TokenProvider.REFRESH_TOKEN_EXPIRED_AT_SECONDS);
+                response.addCookie(refreshTokenCookie);
+
+                log.info("[SecurityConfig] oAuth2SuccessHandler()" +
+                        "\n\taccessTokenCookie : " + accessTokenCookie +
+                        "\n\trefreshTokenCookie : " + refreshTokenCookie);
+
+                response.sendRedirect("/");
             }
         };
         return successHandler;
