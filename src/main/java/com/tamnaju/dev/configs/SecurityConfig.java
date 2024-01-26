@@ -68,15 +68,13 @@ public class SecurityConfig {
 
                 // 특정 URL에 대한 접근 권한 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        // 최상위 경로와 추가 자원 허용
+                        .requestMatchers("/", "/*", "images/**", "/scripts/**", "/stylesheets/**").permitAll()
                         // TODO 로그인 하지 않은 사용자에게만 로그인 페이지 접근 허용
-
-                .requestMatchers("/join", "/login", "/login/**").permitAll()
+                        .requestMatchers("/join", "/login", "/login/**").permitAll()
                         .requestMatchers("/jejumap/**").permitAll()
                         .requestMatchers("/user/**", "/notice/**").permitAll()
-                        // 최상위 경로와 추가 자원 허용
-                        .requestMatchers("/", "images/**", "/scripts/**", "/stylesheets/**").permitAll()
                         .requestMatchers("/notice/write", "/notice/modify").hasRole("ADMIN")
-
                         .anyRequest().authenticated())
 
                 // 로그인
@@ -173,8 +171,8 @@ public class SecurityConfig {
         AuthenticationFailureHandler failureHandler = new AuthenticationFailureHandler() {
             @Override
             public void onAuthenticationFailure(HttpServletRequest request,
-                                                HttpServletResponse response,
-                                                AuthenticationException exception) throws IOException, ServletException {
+                    HttpServletResponse response,
+                    AuthenticationException exception) throws IOException, ServletException {
                 // TODO 로그인 실패 시
                 response.sendRedirect("/login");
             }
@@ -297,7 +295,7 @@ public class SecurityConfig {
         LogoutHandler logoutHandler = new LogoutHandler() {
             @Override
             public void logout(HttpServletRequest request, HttpServletResponse response,
-                               Authentication authentication) {
+                    Authentication authentication) {
                 // TODO 로그아웃 시
             }
         };
@@ -310,13 +308,12 @@ public class SecurityConfig {
         LogoutSuccessHandler logoutSuccessHandler = new LogoutSuccessHandler() {
             @Override
             public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                    Authentication authentication) throws IOException, ServletException {
                 // TODO 로그아웃 성공 시, 쿠키 제거 등
             }
         };
         return logoutSuccessHandler;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,27 +8,31 @@
     <link rel="stylesheet" href="/stylesheets/common.css">
     <link rel="stylesheet" href="/stylesheets/index.css">
 </head>
+
 <body>
     <main>
         <th:block th:replace="~{fragments :: common}"></th:block>
         <th:block th:replace="~{fragments :: header}"></th:block>
+
+        <!-- section1 : 메인 이미지와 사용자가 주로 이용하는 기능에 대한 바로가기 제공 -->
         <div class="main-img-container">
             <img class="main-image" alt="" th:src="@{/images/mainImage.png}">
         </div>
         <div class="main-container">
-            <!-- section1 -->
-            <div class="section1">
+            <!-- section2 : 날씨 API를 사용해 제주의 실시간 날씨 제공 -->
+            <div class="section2">
                 날씨정보
             </div>
-            <!-- section2 -->
             <div class="spring"></div>
-            <div class="section2">
+            <!-- section3 : 비로그인 상태의 사용자에게 로그인 or 회원가입을 유도하는 영역 -->
+            <div class="section3">
                 로그인 유도 영역
             </div>
-            <!-- section3 -->
             <!-- section4 -->
+            <!-- section5 -->
         </div>
-    <th:block th:replace="~{fragments :: footer}"></th:block>
+        <th:block th:replace="~{fragments :: footer}"></th:block>
     </main>
 </body>
+
 </html>
