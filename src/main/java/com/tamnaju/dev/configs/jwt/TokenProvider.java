@@ -10,12 +10,16 @@ import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import com.tamnaju.dev.configs.jwt.domains.PrincipalDetails;
+import com.tamnaju.dev.configs.jwt.domains.TokenDto;
 import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.mappers.UserMapper;
 
@@ -31,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class TokenProvider implements InitializingBean {
+public class TokenProvider implements InitializingBean, AuthenticationProvider {
     public static final String ACCESS_TOKEN = "tamnaju-access";
     public static final String REFRESH_TOKEN = "tamnaju-refresh";
     public static final String AUTHORITIES_KEY = "authorities-key"; // 토큰에 key로 사용될 이름
@@ -155,5 +159,17 @@ public class TokenProvider implements InitializingBean {
         }
 
         return false;
+    }
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'authenticate'");
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'supports'");
     }
 }

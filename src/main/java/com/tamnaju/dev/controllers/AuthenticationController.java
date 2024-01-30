@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tamnaju.dev.configs.jwt.TokenDto;
 import com.tamnaju.dev.configs.jwt.TokenProvider;
+import com.tamnaju.dev.configs.jwt.domains.TokenDto;
 import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.results.user.UserJoinResult;
 import com.tamnaju.dev.domains.services.UserService;

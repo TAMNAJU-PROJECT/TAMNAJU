@@ -1,4 +1,4 @@
-package com.tamnaju.dev.configs.jwt;
+package com.tamnaju.dev.configs.jwt.domains;
 
 import java.util.ArrayList;
 import java.util.Collection;
