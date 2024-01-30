@@ -1,69 +1,37 @@
 const map = document.getElementById('map'); // <div id="map></div>
 
-map.init = function(latitude, longitude) {
-    if(latitude === undefined || longitude === undefined) {
-        navigator.geolocation.getCurrentPosition(function(e) {
-            // latitude = e.coords.latitude;
-            // longitude = e.coords.longitude;
-            map.init(e.coords.latitude, e.coords.longitude);
-        }, function() {
-            map.init(33, 126);
-        });
-        return;
-    }
-    // getCurrentPosition 은 논 블러킹(Non blocking)
-
-
-      const option = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667),
-          level: 8 //확대, 축소 레벨
-      };
-      map.instance = new kakao.maps.Map(map, option);
-
-    const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState !== XMLHttpRequest.DONE) {
-            return;
-        }
-        if(xhr.status >= 200 && xhr.status < 300) {
-            const responseObject = JSON.parse(xhr.responseText);
-            // const items = responseObject['response']['body']['items']['item'];
-
-            const items = responseObject['items'];
-
-            const geocoder = new kakao.maps.services.Geocoder();
-            for (const item of items) {
-                if(item['address']!== null) {
-                    geocoder.addressSearch(item['address'], function(result, status){
-
-                        if(status !== kakao.maps.services.Status.OK) {
-                            return;
-                        }
-                        const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                        const marker = new kakao.maps.Marker({
-                            map: map.instance,
-                            position: coords
-                        });
-                        kakao.maps.event.addListener(marker, 'click', function() {
-                            cover.show();
-                            info.show(item);
-                        });
-                    });
-                }
-
-            }
-
-        } else {
-            alert('데이터를 불러오지 못하였습니다. \n\n 확인을 누르면 페이지를 새로 고칩니다.');
-            location.reload();
-        }
-    };
-    xhr.open('GET', 'https://api.visitjeju.net/vsjApi/contents/searchList?apiKey=0hqh4hlsxan1bhv8&locale=kr'); // 테스트용으로 제주도 관광지로 테스트.
-    // xhr.open('GET', 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=hFAsHSPD%2BAwBzzeNDkOBJTRQMZrl%2B7He3Xb6y8RGldoSqs1MsVo9uTpcWvFw23oRbRMgUDEN3q%2FpHOocGTpopg%3D%3D&pageNo=1&numOfRows=100&dataType=JSON&base_date=20240122&base_time=0500&nx=55&ny=127');
-    xhr.send();
+const option = {
+    center: new kakao.maps.LatLng(33.48569, 126.50033),
+    level: 8 //확대, 축소 레벨
 };
+map.instance = new kakao.maps.Map(map, option);
+console.log(kakao.maps.event);
+console.log(kakao.maps.event.addListener);
 
-map.init();
+kakao.maps.event.addListener(map,'click', function (mouseEvent) {
+    console.log(mouseEvent);
+    console.log(typeof mouseEvent);
+    let clickedLatLng = mouseEvent.latLng;
+    console.log('hello', clickedLatLng);
+    console.log('Clicked Longitude:', clickedLatLng.getLng());
+    console.log('Clicked Latitude:', clickedLatLng.getLat());
+
+    let coords = new kakao.maps.LatLng(clickedLatLng.getLat(), clickedLatLng.getLng());
+    let wgs84Coords = kakao.maps.CoordType.UTMK.fromLatLngToWGS84(coords);
+
+    getWeatherInfo(wgs84Coords.getLat(), wgs84Coords.getLng());
+});
+
+function getWeatherInfo(latitude, longitude) {
+
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=47eccf027772f4e4e0e2fe8a3cb91e64`)
+        .then(res =>{
+            console.log("잘 작동 된다.");
+        })
+        .catch(err=>{console.log(err);});
+
+}
+
 
 const cover = document.getElementById('cover');
 
@@ -73,16 +41,16 @@ cover.isVisible = () => cover.classList.contains('visible');
 
 const info = document.getElementById('info');
 
-info.querySelector('[rel="close"]').onclick = function() {
+info.querySelector('[rel="close"]').onclick = function () {
     cover.hide();
     info.hide();
 }
 
 info.show = (item) => {
-    info.querySelector('[rel="temperature"]').innerText = item['TMP'];
-    info.querySelector('[rel="sky"]').innerText = item['SKY'];
-    info.querySelector('[rel="rain-probability"]').innerText = item['POP'];
-    info.querySelector('[rel="rain-style"]').innerText = item['PTY'];
+    info.querySelector('[rel="temperature"]').innerText = item['introduction'];
+    info.querySelector('[rel="sky"]').innerText = item['phoneno'];
+    info.querySelector('[rel="rain-probability"]').innerText = item[''];
+    info.querySelector('[rel="rain-style"]').innerText = item[''];
 
 
     info.classList.add('visible');
