@@ -10,10 +10,8 @@ import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -35,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class TokenProvider implements InitializingBean, AuthenticationProvider {
+public class TokenProvider implements InitializingBean {
     public static final String ACCESS_TOKEN = "tamnaju-access";
     public static final String REFRESH_TOKEN = "tamnaju-refresh";
     public static final String AUTHORITIES_KEY = "authorities-key"; // 토큰에 key로 사용될 이름
@@ -159,17 +157,5 @@ public class TokenProvider implements InitializingBean, AuthenticationProvider {
         }
 
         return false;
-    }
-
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'authenticate'");
-    }
-
-    @Override
-    public boolean supports(Class<?> authentication) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'supports'");
     }
 }

@@ -5,46 +5,55 @@ import java.util.Collection;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-public class CustomAuthentication implements Authentication{
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class CustomAuthentication implements Authentication {
+    private String name;
+    private Collection<? extends GrantedAuthority> authorites;
+    private Object credentials;
+    private Object details;
+    private Object principal;
+    private boolean isAuthenticated;
+
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getName'");
+        return name;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+        return authorites;
     }
 
     @Override
     public Object getCredentials() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCredentials'");
+        return credentials;
     }
 
     @Override
     public Object getDetails() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDetails'");
+        return details;
     }
 
     @Override
     public Object getPrincipal() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPrincipal'");
+        return principal;
     }
 
     @Override
     public boolean isAuthenticated() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isAuthenticated'");
+        return isAuthenticated;
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAuthenticated'");
+        this.isAuthenticated = isAuthenticated;
     }
 }

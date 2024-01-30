@@ -6,17 +6,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
-import com.tamnaju.dev.configs.jwt.domains.CustomAuthentication;
-
 @Component
 public class CustomAuthenticationManager implements AuthenticationManager {
     @Autowired
-    private TokenProvider tokenProvider;
+    private CustomAuthenticationProvider customAuthenticationProvider;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        CustomAuthentication customAuthentication = new CustomAuthentication();
-
-        return customAuthentication;
+        Authentication authentication2 = customAuthenticationProvider.authenticate(authentication);
+        return authentication2;
     }
 }
