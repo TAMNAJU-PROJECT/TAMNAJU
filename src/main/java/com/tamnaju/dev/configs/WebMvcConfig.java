@@ -12,8 +12,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
         // 특정 패턴의 자원 경로를 설정
-        registry.addResourceHandler("/scripts/**").addResourceLocations("classpath:/static/scripts/");
+        registry.addResourceHandler("/*.ico").addResourceLocations("classpath:/static/icons/");
         registry.addResourceHandler("/stylesheets/**").addResourceLocations("classpath:/static/stylesheets/");
+        registry.addResourceHandler("/scripts/**").addResourceLocations("classpath:/static/scripts/");
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
     }
 }

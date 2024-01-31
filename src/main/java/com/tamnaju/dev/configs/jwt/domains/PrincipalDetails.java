@@ -1,4 +1,4 @@
-package com.tamnaju.dev.configs.jwt.oAuth2;
+package com.tamnaju.dev.configs.jwt.domains;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,12 +31,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
             @Override
             public String getAuthority() {
                 return "ROLE_USER";
-            }
-        });
-        authorities.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return "OAUTH2_USER";
             }
         });
         if (userDto.isAdmin()) {
