@@ -9,7 +9,9 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <link th:href="@{/stylesheets/jejumap/weather.css}" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a680393cb995830e22eb5f90362a606f&libraries=services"></script>
+
     <!--    주소 좌표 받는 값 = &libraries=services-->
     <script defer th:src="@{/scripts/jejumap/weather.js}"></script>
 </head>
@@ -27,25 +29,36 @@
     </div>
     <ul class="data-container">
         <li class="data">
-            <h3 class="caption">지역명</h3>
-            <span class="value" rel="name">지역명 자리</span>
+            <h3 class="caption">날씨아이콘</h3>
+            <span class="value" rel="icon">날씨아이콘</span>
+
         </li>
         <li class="data">
             <h3 class="caption">온도</h3>
-            <span class="value" rel="temperature">온도 자리</span>
+            <span>
+            <span class="value" rel="temperature">온도 자리</span><span>&#8451;</span>
+            </span>
+
+            <span hidden>
+            <span class="value" rel="temperature-high">온도 자리</span><span>&#8451;</span>
+            <span class="value" rel="temperature-low">온도 자리</span><span>&#8451;</span>
+            </span>
         </li>
         <li class="data">
             <h3 class="caption">날씨</h3>
             <span class="value" rel="sky">날씨 자리</span>
         </li>
         <li class="data">
+            <h3 class="caption">강수형태</h3>
+            <span class="value" rel="rain-style">강수형태 자리</span>
+        </li>
+        <li class="data">
             <h3 class="caption">강수확률</h3>
             <span class="value" rel="rain-probability">강수확률 자리</span>
         </li>
         <li class="data">
-            <h3 class="caption">강수형태</h3>
-<!--            <span class="value" rel="rain-style">강수형태 자리</span>-->
-
+            <h3 class="caption">강수확률</h3>
+            <span class="value" rel="description">강수확률 자리</span>
         </li>
     </ul>
 </div>
