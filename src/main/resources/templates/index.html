@@ -10,8 +10,8 @@
 </head>
 
 <body>
-    <th:block th:replace="~{fragment :: common}"></th:block>
-    <th:block th:replace="~{fragment :: header}"></th:block>
+    <th:block th:replace="~{fragments :: common}"></th:block>
+    <th:block th:replace="~{fragments :: header}"></th:block>
     <main id="main">
         <!-- section1 : 메인 이미지와 사용자가 주로 이용하는 기능에 대한 바로가기 제공 -->
         <div class="main-img-container">
@@ -41,7 +41,7 @@
             <!-- section5 -->
         </div>
     </main>
-    <th:block th:replace="~{fragment :: footer}"></th:block>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 
 </html>
