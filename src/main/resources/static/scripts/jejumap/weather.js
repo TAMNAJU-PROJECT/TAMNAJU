@@ -64,7 +64,6 @@ kakao.maps.event.addListener(map.instance,'click', function (position) {
     console.log(position);
     console.log(typeof position);
     let clickedLatLng = position.latLng;
-    console.log('hello', clickedLatLng);
     console.log('Clicked Longitude:', clickedLatLng.getLng());
     console.log('Clicked Latitude:', clickedLatLng.getLat());
     console.log(kakao.maps.services.Coords);

@@ -12,8 +12,7 @@ a:link:hover, a:visited:hover {
 }
 
 body {
-    min-height: 100vh;
-    background-color: #eaecee;
+    background-color: #ffffffe0;
     color: #17202a;
     font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     font-size: 1rem;
@@ -64,6 +63,12 @@ ol, ul {
     padding-inline: unset;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Notification Modal style */
 #dialog {
     top: 0;
     left: 0;
@@ -408,8 +413,18 @@ ol, ul {
 
 /* header */
 #header {
+    width: 100%;
+    height: 12vmin;
+
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#header > .header-container {
     width: 90%;
-    height: 10%;
+    height: 100%;
     background-color: #ffffffe0;
 
     align-items: stretch;
@@ -418,35 +433,43 @@ ol, ul {
     justify-content: flex-start;
 }
 
-#header > .logo {
-    background-color: #17202a;
-    width: 15%;
+#header > .header-container > .logo {
+    /* background-color: #17202a; */
+    width: 30vmin;
     height: 100%;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
 }
 
-#header > .menu-bar {
-    width: 85%;
-    height: 100%;
-    background-color: orange;
+#header > .header-container > .logo > .link > .logo-img {
+    width: 100%;
+    height: auto;
+}
+
+#header > .header-container > .menu-bar {
     box-sizing: border-box;
+    width: 100%;
+    height: 100%;
 
     align-items: center;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    /* background-color: orange; */
 }
 
-#header > .menu-bar > .menu {
-    font-size: 1rem;
-    background-color: aquamarine;
+#header > .header-container > .menu-bar > .menu {
+    font-size: 1.18rem;
+    font-weight: 400;
     margin-left: 4%;
-
+    /* background-color: aquamarine; */
 }
 
 /* footer */
 #footer {
     width: 90%;
-    height: 10%;
+    height: 12%;
 
     font-size: 0.8rem;
     font-weight: 300;

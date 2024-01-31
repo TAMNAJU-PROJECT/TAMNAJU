@@ -10,20 +10,29 @@
 </head>
 
 <body>
-    <main>
-        <th:block th:replace="~{fragments :: common}"></th:block>
-        <th:block th:replace="~{fragments :: header}"></th:block>
-
+    <th:block th:replace="~{fragments :: common}"></th:block>
+    <th:block th:replace="~{fragments :: header}"></th:block>
+    <main id="main">
         <!-- section1 : 메인 이미지와 사용자가 주로 이용하는 기능에 대한 바로가기 제공 -->
         <div class="main-img-container">
-            <img class="main-image" alt="" th:src="@{/images/mainImage.png}">
+            <img class="main-image" alt="" th:src="@{/images/jejuMain.jpeg}">
+            <div class="text-container">
+                <img class="logo-img" alt="" th:src="@{/images/tamnaju-logo-text.png}">
+            </div>
+            <div class="category-container">
+                <div class="category">
+                    <div class="list">카테고리1</div>
+                    <div class="list">카테고리2</div>
+                    <div class="list">카테고리3</div>
+                    <div class="list">카테고리4</div>
+                </div>
+            </div>
         </div>
         <div class="main-container">
             <!-- section2 : 날씨 API를 사용해 제주의 실시간 날씨 제공 -->
             <div class="section2">
                 날씨정보
             </div>
-            <div class="spring"></div>
             <!-- section3 : 비로그인 상태의 사용자에게 로그인 or 회원가입을 유도하는 영역 -->
             <div class="section3">
                 로그인 유도 영역
@@ -31,8 +40,8 @@
             <!-- section4 -->
             <!-- section5 -->
         </div>
-        <th:block th:replace="~{fragments :: footer}"></th:block>
     </main>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 
 </html>

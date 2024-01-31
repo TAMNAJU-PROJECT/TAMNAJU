@@ -1,4 +1,4 @@
-package com.tamnaju.dev.configs.jwt;
+package com.tamnaju.dev.configs.jwt.domains;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TokenInfo {
+public class TokenDto {
     private String grantType;
     private String accessToken;
     private String refreshToken;
