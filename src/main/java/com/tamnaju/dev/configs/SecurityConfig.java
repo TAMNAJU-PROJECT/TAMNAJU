@@ -6,8 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -45,10 +43,9 @@ public class SecurityConfig {
 
                 // 특정 URL에 대한 접근 권한 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        // TODO 로그인 하지 않은 사용자에게만 로그인 페이지 접근 허용
-                        .requestMatchers("/login").anonymous()
                         // 최상위 경로와 추가 자원 허용
                         .requestMatchers("/", "/images/**", "/scripts/**", "/stylesheets/**").permitAll()
+                        .requestMatchers("/login", "/join", "/logout").permitAll()
                         .requestMatchers("/jejumap/**").permitAll()
                         .requestMatchers("/user/**", "/notice/**").permitAll()
                         .requestMatchers("/notice/write", "/notice/modify").hasRole("ADMIN")
@@ -156,10 +153,5 @@ public class SecurityConfig {
     public CustomLogoutSuccessHandler customLogoutSuccessHandler() {
         CustomLogoutSuccessHandler customLogoutSuccessHandler = new CustomLogoutSuccessHandler();
         return customLogoutSuccessHandler;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
