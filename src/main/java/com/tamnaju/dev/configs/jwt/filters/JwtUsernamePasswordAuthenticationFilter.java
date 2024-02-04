@@ -49,7 +49,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
             FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
         log.info("[JwtUsernamePasswordAuthenticationFilter] successfulAuthentication()" +
-                "\n\t" + authResult.getPrincipal().toString());
+                "\n\t" + authResult.getPrincipal());
 
         // token 생성
         TokenDto tokenDto = tokenProvider.generateToken(authResult);
@@ -79,7 +79,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
             HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
         log.info("[JwtUsernamePasswordAuthenticationFilter] unsuccessfulAuthentication() " +
-                "\n\t" + request.getLocalAddr());
+                "\n\t" + failed.getMessage());
 
         response.sendRedirect("/login");
     }

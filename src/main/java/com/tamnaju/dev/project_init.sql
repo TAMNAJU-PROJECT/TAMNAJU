@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS `tamnaju_db`.`users` (
     CONSTRAINT PRIMARY KEY (`email`)
 );
 
+DROP TABLE `tamnaju_db`.`users`;
+
 CREATE TABLE IF NOT EXISTS `tamnaju_db`.`signature` (
     `key_byte` VARBINARY(32) NOT NULL,
     `created_at` DATETIME NOT NULL,

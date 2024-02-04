@@ -32,15 +32,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (userDetails == null) {
             throw new BadCredentialsException("[CustomAuthenticationProvider] authenticate()" +
                     "\n\tUser Not Found");
-        } else if (!userDetails.getPassword().matches(passwordEncoder.encode(password))) {
+        } else if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("[CustomAuthenticationProvider] authenticate()" +
                     "\n\tPassword Not Matched");
         }
 
-        log.info("[CustomAuthenticationProvider] authenticate()" +
-                "\n\t");
-
-        return new UsernamePasswordAuthenticationToken(id, password, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     @Override
