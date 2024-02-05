@@ -135,9 +135,19 @@ function getShortWeatherInfo(today, nx, ny) {
         .then(res => {
             console.log(res);
             const items = res.data.response.body.items.item;
-            for(item of items) {
 
+            const hourWeather1 = items.filter(weather => {
+                return weather.fcstTime === "0700" && (weather.category ==="TMP" || weather.category ==="SKY" || weather.category ==="PTY" || weather.category ==="POP");
+            });
+            const hourWeather2 = items.filter(weather => {
+                return weather.fcstTime === "0800" && (weather.category ==="TMP" || weather.category ==="SKY" || weather.category ==="PTY" || weather.category ==="POP");
+            });
+            for(const item of items) {
+                infoShort.show(item);
             }
+
+            console.log(hourWeather1);
+            console.log(hourWeather2);
             infoShort.show();
         })
         .catch(err => {
@@ -173,9 +183,8 @@ info.isVisible = () => info.classList.contains('visible');
 
 
 infoShort.show = (weather) => {
-    infoShort.querySelector('[rel="icon"]').innerHTML = dd;
-    infoShort.querySelector('[rel="temperature-high"]').innerText = weather;
-    infoShort.querySelector();
+    infoShort.querySelector('[rel="icon"]').innerHTML = weather;
+    infoShort.querySelector('[rel="temperature"]').innerText = weather;
 }
 
 kakao.maps.event.addListener(map.instance, 'click', function (position) {
