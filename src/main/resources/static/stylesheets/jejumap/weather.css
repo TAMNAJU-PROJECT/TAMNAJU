@@ -3,11 +3,12 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     margin: 0;
+    height: 100vh;
 }
 
 
 #map {
-    height: 100vh;
+    flex: 1;
 }
 
 #cover {top: 0;
@@ -36,7 +37,7 @@ body {
     left: -1rem;
     width: 22.5rem;
     height: 100%;
-    background-color: rgb(255,255,255);
+    background-color: rgba(255,255,255, 50%);
     opacity: 0;
     pointer-events: none;
     position: fixed;
@@ -50,6 +51,11 @@ body {
     flex-direction: column;
     justify-content: flex-start;
 }
+
+#info:hover {
+    background-color: rgba(255,255,255, 90%);
+}
+
 
 #info.visible {
     left: 0;

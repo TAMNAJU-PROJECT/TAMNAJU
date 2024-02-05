@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>제주도 날씨</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
     <link th:href="@{/stylesheets/jejumap/weather.css}" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -23,13 +24,44 @@
 
 <div id="map"></div>
 <div id="cover"></div>
+
+
+<div class="visible" id="info-short">
+    <div class="title-container">
+        <img class="close" alt="닫기" rel="close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoElEQVR4nO2WUQqAIBBE57TzVZ3DSxf9FASJueusBTnQp/seplPAyMg9CcAEfaZj9mMIYAWwCOHnzNm6YHkDrpRwwxUSzfAWCRncIyGHWyTC4DUS4fCSRDd4TqI7/Fqt2/FEVPe3BXjZ9ohvRzG5d95NgoUDFy7BitMeJkHDVZNL0HHPZRJsKJlmCQoazi1BYb2aJRjQ7SaJ9PZv+ci/sgM32VIN2RJOpwAAAABJRU5ErkJggg==">
+    </div>
+    <div id="short-weather-container">
+        <ul class="data-container">
+            <li class="data">
+                <h1 class="caption">내일 날씨</h1>
+                <span class="value" rel="icon">내일 아이콘</span>
+            </li>
+            <li class="data">
+                <h1 class="caption">내일 온도</h1>
+                <span class="value" rel="temperature-high">내일 온도정보</span>
+                <span class="value" rel="temperature-low">내일 온도정보</span>
+            </li>
+            <li class="data">
+                <h1 class="caption">모레 날씨</h1>
+                <span class="value" rel="icon">모레 아이콘</span>
+            </li>
+            <li class="data">
+                <h1 class="caption">모레 온도</h1>
+                <span class="value" rel="temperature-high">모레 온도정보</span>
+                <span class="value" rel="temperature-low">모레 온도정보</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
 <div class="visible" id="info">
     <div class="title-container">
         <img class="close" alt="닫기" rel="close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoElEQVR4nO2WUQqAIBBE57TzVZ3DSxf9FASJueusBTnQp/seplPAyMg9CcAEfaZj9mMIYAWwCOHnzNm6YHkDrpRwwxUSzfAWCRncIyGHWyTC4DUS4fCSRDd4TqI7/Fqt2/FEVPe3BXjZ9ohvRzG5d95NgoUDFy7BitMeJkHDVZNL0HHPZRJsKJlmCQoazi1BYb2aJRjQ7SaJ9PZv+ci/sgM32VIN2RJOpwAAAABJRU5ErkJggg==">
     </div>
     <ul class="data-container">
         <li class="data">
-            <h3 class="caption">날씨아이콘</h3>
+            <h3 class="caption">현재 날씨</h3>
             <span class="value" rel="icon">날씨아이콘</span>
 
         </li>
