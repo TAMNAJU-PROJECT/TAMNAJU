@@ -80,8 +80,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
             AuthenticationException failed) throws IOException, ServletException {
         log.info("[JwtUsernamePasswordAuthenticationFilter] unsuccessfulAuthentication() " +
                 "\n\t" + failed.getMessage());
-
-        // TODO 로그인 실패 시, 로직 추가 필요
+        
         response.sendRedirect("/login");
     }
 }

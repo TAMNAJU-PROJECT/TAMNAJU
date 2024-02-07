@@ -12,17 +12,17 @@
 <body>
     <th:block th:replace="~{fragments :: header}"></th:block>
     <main class="spring">
-        <div class="">공지사항 - 게시물 작성</div>
+        <div id="title">공지사항 - 게시물 작성</div>
         <form id="write">
             <label>
-                <div>제목</div>
-                <input type="text" name="title">
+                <div class="subject">제목</div>
+                <input class="content" type="text" name="title">
             </label>
             <label>
-                <div>내용</div>
-                <input type="text" name="content">
+                <div class="subject">내용</div>
+                <input class="content" type="text" name="content">
             </label>
-            <input type="submit">
+            <input type="submit" value="게시하기">
         </form>
     </main>
     <th:block th:replace="~{fragments :: footer}"></th:block>

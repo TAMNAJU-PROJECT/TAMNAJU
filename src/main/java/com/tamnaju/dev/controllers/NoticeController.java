@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tamnaju.dev.configs.jwt.TokenProvider;
+
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +24,20 @@ public class NoticeController {
     }
 
     @GetMapping(value = "/write")
-    public void getWrite(HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse) throws IOException {
-        if (httpServletRequest.getCookies() == null) {
-            httpServletResponse.sendRedirect("/");
+    public void getWrite(HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        if (request.getCookies() == null) {
+            response.sendRedirect("/login");
         } else {
-            log.info("XXXXX" + httpServletRequest.getCookies().toString());
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals(TokenProvider.ACCESS_TOKEN)) {
+                    log.info(cookie.getName());
+                    log.info(cookie.getAttribute("isAdmin"));
+
+                    return;
+                }
+            }
+            response.sendRedirect("/");
         }
     }
 

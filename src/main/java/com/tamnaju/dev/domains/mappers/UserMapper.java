@@ -7,6 +7,8 @@ import com.tamnaju.dev.domains.entities.UserEntity;
 
 @Mapper
 public interface UserMapper {
+    public UserEntity findUserByEmail(@Param(value = "email") String email);
+
     public UserEntity findUserById(@Param(value = "id") String id);
 
     public UserEntity findUserByProviderId(@Param(value = "providerId") String providerId);
