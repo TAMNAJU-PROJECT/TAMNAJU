@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>탐나주</title>
-    <link rel="stylesheet" href="/stylesheets/common.css">
-    <link rel="stylesheet" href="/stylesheets/index.css">
+    <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
+    <link rel="stylesheet" th:href="@{/stylesheets/index.css}">
 </head>
-
 <body>
     <th:block th:replace="~{fragments :: common}"></th:block>
     <th:block th:replace="~{fragments :: header}"></th:block>
@@ -43,5 +41,4 @@
     </main>
     <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
-
 </html>
