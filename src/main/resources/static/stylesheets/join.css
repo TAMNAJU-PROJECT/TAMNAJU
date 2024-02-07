@@ -20,3 +20,17 @@
 #joinForm > label > input {
     width: 10rem;
 }
+
+#joinForm > .message {
+    height: 0;
+    filter: opacity(0);
+
+    transition-duration: 250ms;
+    transition-property: filter, height;
+    transition-timing-function: ease;
+}
+
+#joinForm > .message.visible {
+    height: 1rem;
+    filter: opacity(100%);
+}

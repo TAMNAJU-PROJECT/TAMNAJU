@@ -37,10 +37,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String accessToken = null;
 
         try {
-            accessToken = Arrays.stream(request.getCookies())
-                    .filter(cookie -> cookie.getName().equals(TokenProvider.ACCESS_TOKEN)).findFirst()
-                    .map(cookie -> cookie.getValue())
-                    .orElse(null);
+            if (request.getCookies() != null) {
+                accessToken = Arrays.stream(request.getCookies())
+                        .filter(cookie -> cookie.getName().equals(TokenProvider.ACCESS_TOKEN)).findFirst()
+                        .map(cookie -> cookie.getValue())
+                        .orElse(null);
+            }
         } catch (Exception e) {
             log.info(e.getMessage());
         }

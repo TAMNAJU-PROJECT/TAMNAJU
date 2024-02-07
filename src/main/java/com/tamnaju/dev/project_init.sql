@@ -8,12 +8,43 @@ CREATE TABLE IF NOT EXISTS `tamnaju_db`.`users` (
     `password` VARCHAR(60) NOT NULL,
     `birth` DATE NOT NULL,
     `admin_flag` BOOLEAN NOT NULL DEFAULT FALSE,
-    `registered_at` DATETIME NOT NULL DEFAULT NOW (),
+    `registered_at` DATETIME NOT NULL DEFAULT NOW(),
     `deleted_at` DATETIME NULL DEFAULT NULL,
     `suspended_at` DATETIME NULL DEFAULT NULL,
     `provider` VARCHAR(10) NULL,
     `provider_id` VARCHAR(20) NULL,
-    CONSTRAINT PRIMARY KEY (`email`)
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT UNIQUE (`email`)
+);
+
+CREATE TABLE IF NOT EXISTS `tamnaju_db`.`notice` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `user_id` VARCHAR(32) NOT NULL,
+    `title` VARCHAR(100) NOT NULL,
+    `content` LONGTEXT NOT NULL,
+    `view` BIGINT NOT NULL DEFAULT 0,
+    `posted_at` DATETIME NOT NULL DEFAULT NOW(),
+    `modified_at` DATETIME NULL DEFAULT NULL,
+    `deleted_at` DATETIME NULL DEFAULT NULL,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `tamnaju_db`.`users` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `tamnaju_db`.`qna` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `user_id` VARCHAR(32) NOT NULL,
+    `title` VARCHAR(100) NOT NULL,
+    `content` LONGTEXT NOT NULL,
+    `view` BIGINT NOT NULL DEFAULT 0,
+    `posted_at` DATETIME NOT NULL DEFAULT NOW(),
+    `modified_at` DATETIME NULL DEFAULT NULL,
+    `deleted_at` DATETIME NULL DEFAULT NULL,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `tamnaju_db`.`users` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `tamnaju_db`.`signature` (

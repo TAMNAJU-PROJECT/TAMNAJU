@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tamnaju.dev.domains.mappers.UserMapper">
+    <select id="findUserByEmail"
+        resultType="com.tamnaju.dev.domains.entities.UserEntity">
+        SELECT `id`            AS `id`,
+               `email`         AS `email`,
+               `name`          AS `name`,
+               `password`      AS `password`,
+               `birth`         AS `birth`,
+               `admin_flag`    AS `isAdmin`,
+               `registered_at` AS `registeredAt`,
+               `deleted_at`    AS `deletedAt`,
+               `suspended_at`  AS `suspendedAt`,
+               `provider`      AS `provider`,
+               `provider_id`   AS `providerId`
+        FROM `tamnaju_db`.`users`
+        WHERE BINARY `email` = #{email}
+        LIMIT 1
+    </select>
+
     <select id="findUserById"
         resultType="com.tamnaju.dev.domains.entities.UserEntity">
         SELECT `id`            AS `id`,

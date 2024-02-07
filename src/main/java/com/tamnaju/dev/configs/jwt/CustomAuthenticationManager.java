@@ -13,7 +13,6 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        Authentication authentication2 = customAuthenticationProvider.authenticate(authentication);
-        return authentication2;
+        return customAuthenticationProvider.authenticate(authentication);
     }
 }

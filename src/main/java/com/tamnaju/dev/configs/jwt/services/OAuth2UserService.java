@@ -3,13 +3,13 @@ package com.tamnaju.dev.configs.jwt.services;
 import java.time.LocalDate;
 import java.util.Map;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.tamnaju.dev.configs.CustomPasswordEncoder;
 import com.tamnaju.dev.configs.jwt.domains.PrincipalDetails;
 import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.entities.UserEntity;
@@ -20,10 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class OAuth2UserService extends DefaultOAuth2UserService {
-    private PasswordEncoder passwordEncoder;
+    private CustomPasswordEncoder passwordEncoder;
     private UserMapper userMapper;
 
-    OAuth2UserService(PasswordEncoder passwordEncoder, UserMapper userMapper) {
+    OAuth2UserService(CustomPasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
     }

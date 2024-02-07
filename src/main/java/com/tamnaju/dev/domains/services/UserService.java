@@ -1,8 +1,8 @@
 package com.tamnaju.dev.domains.services;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.tamnaju.dev.configs.CustomPasswordEncoder;
 import com.tamnaju.dev.domains.dtos.UserDto;
 import com.tamnaju.dev.domains.entities.UserEntity;
 import com.tamnaju.dev.domains.mappers.UserMapper;
@@ -13,9 +13,9 @@ import net.minidev.json.JSONObject;
 @Service
 public class UserService {
     private UserMapper userMapper;
-    private PasswordEncoder passwordEncoder;
+    private CustomPasswordEncoder passwordEncoder;
 
-    UserService(UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    UserService(UserMapper userMapper, CustomPasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
     }
@@ -24,7 +24,9 @@ public class UserService {
         UserEntity userEntity = UserEntity.userDtoToUserEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         // PK에 대한 중복 여부 검증
-        if (userMapper.findUserById(userEntity.getEmail()) != null) {
+        if (userMapper.findUserById(userEntity.getId()) != null) {
+            return UserJoinResult.FAILURE_DUPLICATE_ID;
+        } else if (userMapper.findUserById(userEntity.getEmail()) != null) {
             return UserJoinResult.FAILURE_DUPLICATE_EMAIL;
         }
         return userMapper.saveUser(userEntity) > 0
