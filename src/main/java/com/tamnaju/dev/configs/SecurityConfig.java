@@ -45,10 +45,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         // 최상위 경로와 추가 자원 허용
                         .requestMatchers("/", "/images/**", "/scripts/**", "/stylesheets/**").permitAll()
-                        .requestMatchers("/login", "/join", "/logout").permitAll()
-                        .requestMatchers("/jejumap/**").permitAll()
-                        .requestMatchers("/user/**", "/notice/**").permitAll()
+                        .requestMatchers("/join", "/login").anonymous()
+                        .requestMatchers("/logout").hasRole("USER")
                         .requestMatchers("/notice/write", "/notice/modify").hasRole("ADMIN")
+                        .requestMatchers("/user/**", "/notice/**").permitAll()
+                        .requestMatchers("/jejumap/**").permitAll()
                         .anyRequest().authenticated())
 
                 // Jwt login

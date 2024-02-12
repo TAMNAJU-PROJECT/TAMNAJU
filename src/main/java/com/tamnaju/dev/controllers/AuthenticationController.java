@@ -16,10 +16,8 @@ import com.tamnaju.dev.domains.results.user.UserJoinResult;
 import com.tamnaju.dev.domains.services.UserService;
 
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 
-@Slf4j
 @Controller
 @RequestMapping(value = "/")
 public class AuthenticationController {
