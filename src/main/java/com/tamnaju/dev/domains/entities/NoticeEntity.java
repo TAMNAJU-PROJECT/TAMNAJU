@@ -1,5 +1,7 @@
 package com.tamnaju.dev.domains.entities;
 
+import com.tamnaju.dev.domains.dtos.NoticeDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,16 +21,16 @@ public class NoticeEntity {
     private String modifiedAt;
     private String deletedAt;
 
-    public NoticeEntity noticeDtoToNoticeEntity(NoticeEntity noticeEntity) {
+    public static NoticeEntity noticeDtoToNoticeEntity(NoticeDto noticeDto) {
         return NoticeEntity.builder()
-                .id(noticeEntity.getId())
-                .userId(noticeEntity.getUserId())
-                .title(noticeEntity.getTitle())
-                .content(noticeEntity.getContent())
-                .view(noticeEntity.getView())
-                .postedAt(noticeEntity.getPostedAt())
-                .modifiedAt(noticeEntity.getModifiedAt())
-                .deletedAt(noticeEntity.getDeletedAt())
+                .id(noticeDto.getId())
+                .userId(noticeDto.getUserId())
+                .title(noticeDto.getTitle())
+                .content(noticeDto.getContent())
+                .view(noticeDto.getView())
+                .postedAt(noticeDto.getPostedAt())
+                .modifiedAt(noticeDto.getModifiedAt())
+                .deletedAt(noticeDto.getDeletedAt())
                 .build();
     }
 }

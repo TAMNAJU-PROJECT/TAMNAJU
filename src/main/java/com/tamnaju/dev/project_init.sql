@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `tamnaju_db`.`users` (
     CONSTRAINT UNIQUE (`email`)
 );
 
-CREATE TABLE IF NOT EXISTS `tamnaju_db`.`notice` (
+CREATE TABLE IF NOT EXISTS `tamnaju_db`.`notices` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `user_id` VARCHAR(32) NOT NULL,
     `title` VARCHAR(100) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `tamnaju_db`.`notice` (
         ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `tamnaju_db`.`qna` (
+CREATE TABLE IF NOT EXISTS `tamnaju_db`.`qnas` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `user_id` VARCHAR(32) NOT NULL,
     `title` VARCHAR(100) NOT NULL,

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tamnaju.dev.domains.mappers.NoticeMapper">
+    <select id="findNoticeById"
+        resultType="com.tamnaju.dev.domains.entities.NoticeEntity">
+        SELECT `id`          AS `id`,
+               `user_id`     AS `userId`,
+               `title`       AS `title`,
+               `content`     AS `content`,
+               `view`        AS `view`,
+               `posted_at`   AS `postedAt`,
+               `modified_at` AS `modifiedAt`,
+               `deleted_at`  AS `deletedAt`
+        FROM `tamnaju_db`.`notices`
+        WHERE `id` = #{id}
+        LIMIT 1
+    </select>
+
+    <select id="findNoticesByNotice"
+        resultType="com.tamnaju.dev.domains.entities.NoticeEntity">
+        SELECT `id`          AS `id`,
+               `user_id`     AS `userId`,
+               `title`       AS `title`,
+               `content`     AS `content`,
+               `view`        AS `view`,
+               `posted_at`   AS `postedAt`,
+               `modified_at` AS `modifiedAt`,
+               `deleted_at`  AS `deletedAt`
+        FROM `tamnaju_db`.`notices`
+        WHERE `user_id` CONCAT('$', #{noticeEntity.userId}, '$')
+            AND `title` CONCAT('$', #{noticeEntity.title}, '$')
+            AND `content` CONCAT('$', #{noticeEntity.content}, '$')
+        ORDER BY `#{orderBy}` DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="findNoticesByNoticeWithoutData">
+        SELECT COUNT(0)
+        FROM `tamnaju_db`.`notices`
+        WHERE `user_id` CONCAT('$', #{noticeEntity.userId}, '$')
+            AND `title` CONCAT('$', #{noticeEntity.title}, '$')
+            AND `content` CONCAT('$', #{noticeEntity.content}, '$')
+        ORDER BY `#{orderBy}` DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <insert id="saveNotice"
+        parameterType="com.tamnaju.dev.domains.entities.NoticeEntity">
+        INSERT INTO `tamnaju_db`.`notices` (`id`,
+                                            `user_id`,
+                                            `title`,
+                                            `content`,
+                                            `view`,
+                                            `posted_at`,
+                                            `modified_at`,
+                                            `deleted_at`)
+        VALUES (#{id},
+                #{userId},
+                #{title},
+                #{content},
+                #{view},
+                #{postedAt},
+                #{modifiedAt},
+                #{deletedAt})
+    </insert>
+</mapper>

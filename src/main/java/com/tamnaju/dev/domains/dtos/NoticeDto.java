@@ -29,7 +29,11 @@ public class NoticeDto {
     private String modifiedAt;
     private String deletedAt;
 
-    public NoticeDto noticeEntityToNoticeDto(NoticeEntity noticeEntity) {
+    private String orderBy;
+    private int limit;
+    private int page;
+
+    public static NoticeDto noticeEntityToNoticeDto(NoticeEntity noticeEntity) {
         return NoticeDto.builder()
                 .id(noticeEntity.getId())
                 .userId(noticeEntity.getUserId())
