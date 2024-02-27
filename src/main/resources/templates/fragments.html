@@ -32,14 +32,16 @@
 <header id="header" th:fragment="header">
     <div class="header-container">
         <div class="logo">
-            <a class="link" href="#">
+            <a class="link" href="/">
                 <img class="logo-img" alt="logo" th:src="@{/images/tamnaju-logo.png}">
             </a>
         </div>
-        <div class="menu-bar">
-            <div class="menu"><a href="#">공지사항</a></div>
-            <div class="menu"><a href="#">로그인</a></div>
-        </div>
+        <ul class="menu-bar">
+            <li class="menu"><a href="#">공지사항</a></li>
+            <li class="menu" th:if="${authentication == null}"><a href="/join">회원 가입</a></li>
+            <li class="menu" th:if="${authentication == null}"><a href="/login">로그인</a></li>
+            <li class="menu" th:if="${authentication != null}"><a href="/logout">로그아웃</a></li>
+        </ul>
     </div>
 </header>
 

@@ -71,14 +71,14 @@
 }
 
 #main > .main-img-container > .category-container > .category > .list {
-    width: 20vmin; /* 뷰포트 너비 또는 높이의 20%로 설정하여 정사각형 유지 */
-    height: 20vmin;
+    width: 10rem; /* 뷰포트 너비 또는 높이의 20%로 설정하여 정사각형 유지 */
+    height: 10rem;
     border-radius: 1rem;
     background-color: #ff8400; /* 배경색은 예시로 지정한 색상 */
     margin: 2rem; /* 각 정사각형 간의 간격을 설정 */
 
     transition-property: transform;
-    transition-duration: 0.5s;
+    transition-duration: 250ms;
     transition-timing-function: ease;
 }
 

@@ -53,7 +53,7 @@ public class AuthenticationController {
             userJoinResult = UserJoinResult.FAILURE;
         } else {
             userDto.setBirth(LocalDate.parse(birthStr));
-            userJoinResult = userService.insertUser(responseObject, userDto);
+            userJoinResult = userService.insertUser(userDto);
         }
         responseObject.put("result", userJoinResult.name().toLowerCase());
         return responseObject;

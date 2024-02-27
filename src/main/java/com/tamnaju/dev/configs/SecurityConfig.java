@@ -44,7 +44,7 @@ public class SecurityConfig {
                 // 특정 URL에 대한 접근 권한 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         // 최상위 경로와 추가 자원 허용
-                        .requestMatchers("/", "/images/**", "/scripts/**", "/stylesheets/**").permitAll()
+                        .requestMatchers("/*", "/images/**", "/scripts/**", "/stylesheets/**").permitAll()
                         .requestMatchers("/join", "/login").anonymous()
                         .requestMatchers("/logout").hasRole("USER")
                         .requestMatchers("/notice/write", "/notice/modify").hasRole("ADMIN")

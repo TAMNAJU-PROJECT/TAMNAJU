@@ -8,8 +8,6 @@ import com.tamnaju.dev.domains.entities.UserEntity;
 import com.tamnaju.dev.domains.mappers.UserMapper;
 import com.tamnaju.dev.domains.results.user.UserJoinResult;
 
-import net.minidev.json.JSONObject;
-
 @Service
 public class UserService {
     private UserMapper userMapper;
@@ -20,7 +18,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserJoinResult insertUser(JSONObject responseObject, UserDto userDto) {
+    public UserJoinResult insertUser(UserDto userDto) {
         UserEntity userEntity = UserEntity.userDtoToUserEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         // PK에 대한 중복 여부 검증
