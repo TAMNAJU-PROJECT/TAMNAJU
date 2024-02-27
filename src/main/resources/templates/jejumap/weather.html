@@ -1,100 +1,90 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>제주도 날씨</title>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
     <link th:href="@{/stylesheets/jejumap/weather.css}" rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a680393cb995830e22eb5f90362a606f&libraries=services"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"
+        integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a680393cb995830e22eb5f90362a606f&libraries=services"></script>
 
     <!--    주소 좌표 받는 값 = &libraries=services-->
     <script defer th:src="@{/scripts/jejumap/weather.js}"></script>
 </head>
+
 <body>
-<th:block th:replace="~{fragments :: common}"></th:block>
-<th:block th:replace="~{fragments :: header}"></th:block>
+    <th:block th:replace="~{fragments :: common}"></th:block>
+    <th:block th:replace="~{fragments :: header}"></th:block>
 
 
 
-<div id="map"></div>
-<div id="cover"></div>
+
+    <main id="main">
+        <div id="map"></div>
+        <div class="table-container">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>날짜</th>
+                        <th>시간</th>
+                        <th>기온</th>
+                        <th>구름</th>
+                        <th>강수 형태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </main>
 
 
-<div class="visible" id="info-short">
-    <div class="title-container">
-        <img class="close" alt="닫기" rel="close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoElEQVR4nO2WUQqAIBBE57TzVZ3DSxf9FASJueusBTnQp/seplPAyMg9CcAEfaZj9mMIYAWwCOHnzNm6YHkDrpRwwxUSzfAWCRncIyGHWyTC4DUS4fCSRDd4TqI7/Fqt2/FEVPe3BXjZ9ohvRzG5d95NgoUDFy7BitMeJkHDVZNL0HHPZRJsKJlmCQoazi1BYb2aJRjQ7SaJ9PZv+ci/sgM32VIN2RJOpwAAAABJRU5ErkJggg==">
-    </div>
-    <div id="short-weather-container">
+
+    <div class="visible" id="info">
+        <div class="title-container">
+            <img class="close" alt="닫기" rel="close"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoElEQVR4nO2WUQqAIBBE57TzVZ3DSxf9FASJueusBTnQp/seplPAyMg9CcAEfaZj9mMIYAWwCOHnzNm6YHkDrpRwwxUSzfAWCRncIyGHWyTC4DUS4fCSRDd4TqI7/Fqt2/FEVPe3BXjZ9ohvRzG5d95NgoUDFy7BitMeJkHDVZNL0HHPZRJsKJlmCQoazi1BYb2aJRjQ7SaJ9PZv+ci/sgM32VIN2RJOpwAAAABJRU5ErkJggg==">
+        </div>
         <ul class="data-container">
             <li class="data">
-                <h1 class="caption">내일 날씨</h1>
-                <span class="value" rel="icon">내일 아이콘</span>
+                <h3 class="caption">현재 날씨</h3>
+                <span class="value" rel="icon">날씨아이콘</span>
+
             </li>
             <li class="data">
-                <h1 class="caption">내일 온도</h1>
-                <span class="value" rel="temperature">내일 온도정보</span>
+                <h3 class="caption">온도</h3>
+                <span>
+                    <span class="value" rel="temperature">온도 자리</span><span>&#8451;</span>
+                </span>
+
+                <span hidden>
+                    <span class="value" rel="temperature-high">온도 자리</span><span>&#8451;</span>
+                    <span class="value" rel="temperature-low">온도 자리</span><span>&#8451;</span>
+                </span>
             </li>
             <li class="data">
-                <h1 class="caption">모레 날씨</h1>
-                <span class="value" rel="icon">모레 아이콘</span>
+                <h3 class="caption">날씨</h3>
+                <span class="value" rel="sky">날씨 자리</span>
             </li>
             <li class="data">
-                <h1 class="caption">모레 온도</h1>
-                <span class="value" rel="temperature-high">모레 온도정보</span>
-                <span class="value" rel="temperature-low">모레 온도정보</span>
+                <h3 class="caption">강수형태</h3>
+                <span class="value" rel="rain-style">강수형태 자리</span>
             </li>
         </ul>
     </div>
-</div>
 
-
-<div class="visible" id="info">
-    <div class="title-container">
-        <img class="close" alt="닫기" rel="close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoElEQVR4nO2WUQqAIBBE57TzVZ3DSxf9FASJueusBTnQp/seplPAyMg9CcAEfaZj9mMIYAWwCOHnzNm6YHkDrpRwwxUSzfAWCRncIyGHWyTC4DUS4fCSRDd4TqI7/Fqt2/FEVPe3BXjZ9ohvRzG5d95NgoUDFy7BitMeJkHDVZNL0HHPZRJsKJlmCQoazi1BYb2aJRjQ7SaJ9PZv+ci/sgM32VIN2RJOpwAAAABJRU5ErkJggg==">
-    </div>
-    <ul class="data-container">
-        <li class="data">
-            <h3 class="caption">현재 날씨</h3>
-            <span class="value" rel="icon">날씨아이콘</span>
-
-        </li>
-        <li class="data">
-            <h3 class="caption">온도</h3>
-            <span>
-            <span class="value" rel="temperature">온도 자리</span><span>&#8451;</span>
-            </span>
-
-            <span hidden>
-            <span class="value" rel="temperature-high">온도 자리</span><span>&#8451;</span>
-            <span class="value" rel="temperature-low">온도 자리</span><span>&#8451;</span>
-            </span>
-        </li>
-        <li class="data">
-            <h3 class="caption">날씨</h3>
-            <span class="value" rel="sky">날씨 자리</span>
-        </li>
-        <li class="data">
-            <h3 class="caption">강수형태</h3>
-            <span class="value" rel="rain-style">강수형태 자리</span>
-        </li>
-        <li class="data">
-            <h3 class="caption">강수확률</h3>
-            <span class="value" rel="rain-probability">강수확률 자리</span>
-        </li>
-        <li class="data">
-            <h3 class="caption">강수확률</h3>
-            <span class="value" rel="description">강수확률 자리</span>
-        </li>
-    </ul>
-</div>
-
-<th:block th:replace="~{fragments :: footer}"></th:block>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
 
 </body>
+
 </html>
