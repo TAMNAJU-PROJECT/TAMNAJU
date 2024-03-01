@@ -19,6 +19,7 @@ import com.tamnaju.dev.configs.jwt.handlers.CustomLogoutHandler;
 import com.tamnaju.dev.configs.jwt.handlers.CustomLogoutSuccessHandler;
 import com.tamnaju.dev.configs.jwt.handlers.CustomOAuth2SuccessHandler;
 import com.tamnaju.dev.configs.jwt.services.PrincipalUserDetailsService;
+import com.tamnaju.dev.utilities.CustomAuthChecker;
 
 @Configuration
 @EnableWebSecurity
@@ -154,5 +155,11 @@ public class SecurityConfig {
     public CustomLogoutSuccessHandler customLogoutSuccessHandler() {
         CustomLogoutSuccessHandler customLogoutSuccessHandler = new CustomLogoutSuccessHandler();
         return customLogoutSuccessHandler;
+    }
+
+    // Cookie로부터 추출된 authentication을 검증하는 클래스
+    @Bean
+    public CustomAuthChecker CustomAuthChecker() {
+        return new CustomAuthChecker();
     }
 }

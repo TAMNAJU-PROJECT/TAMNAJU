@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
+    @SuppressWarnings("null")
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this.customInterceptor())
@@ -17,6 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/resources/**");
     }
 
+    @SuppressWarnings("null")
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 특정 패턴의 자원 경로를 설정

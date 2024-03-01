@@ -36,11 +36,29 @@
                 <img class="logo-img" alt="logo" th:src="@{/images/tamnaju-logo.png}">
             </a>
         </div>
-        <ul class="menu-bar">
-            <li class="menu"><a href="#">공지사항</a></li>
-            <li class="menu" th:if="${authentication == null}"><a href="/join">회원 가입</a></li>
-            <li class="menu" th:if="${authentication == null}"><a href="/login">로그인</a></li>
-            <li class="menu" th:if="${authentication != null}"><a href="/logout">로그아웃</a></li>
+        <div class="spring"></div>
+        <ul class="menu-container">
+            <li class="item">
+                <a class="link" th:href="@{/jejumap/weather}">날씨</a>
+            </li>
+            <li class="item">
+                <a class="link" th:href="@{/notice/list}">공지사항</a>
+            </li>
+        </ul>
+        <div class="spring"></div>
+        <ul class="menu-container">
+            <li class="item" th:if="${authentication == null}">
+                <a class="link" th:href="@{/join}">회원 가입</a>
+            </li>
+            <li class="item" th:if="${authentication == null}">
+                <a class="link" th:href="@{/login}">로그인</a>
+            </li>
+            <li class="item" th:if="${authentication != null}">
+                <a class="link" th:href="@{/my-info}">내 정보</a>
+            </li>
+            <li class="item" th:if="${authentication != null}">
+                <a class="link" th:href="@{/logout}">로그아웃</a>
+            </li>
         </ul>
     </div>
 </header>
