@@ -20,12 +20,23 @@
                 <img class="logo-img" alt="" th:src="@{/images/tamnaju-logo-text.png}">
             </div>
             <div class="category-container">
-                <ol class="category">
-                    <li class="list">카테고리1</li>
-                    <li class="list">카테고리2</li>
-                    <li class="list">카테고리3</li>
-                    <li class="list">카테고리4</li>
-                </ol>
+                <ul class="category">
+                    <li class="item">
+                        <a class="link" th:href="@{/jejumap/weather}">
+                            <img class="image" th:src="@{/images/icons/weather-icon.png}" alt="날씨">
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a class="link" th:href="@{#}">
+                            흠...
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a class="link" th:href="@{/notice}">
+                            <img class="image" th:src="@{/images/icons/notice-icon.png}" alt="공지사항">
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="main-container">

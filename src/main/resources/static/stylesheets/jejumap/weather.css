@@ -51,6 +51,10 @@ body {
     background-color: #E0E0E0;
 }
 
+#table > tbody > tr > * {
+    min-width: 3rem;
+}
+
 #table > tbody > tr > td.table-date {
     background-color: #C0C0C0;
 }

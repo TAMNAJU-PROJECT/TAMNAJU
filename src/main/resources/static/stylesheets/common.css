@@ -192,9 +192,7 @@ a {
 }
 
 #header > .header-container > .menu-container > .item {
-    background-color: #e0e0e0e0;
-    border-radius: 0.5rem;
-    padding: 0.25rem;
+    height: 2.5rem;
 
     transition-duration: 250ms;
     transition-property: transform;
@@ -202,8 +200,7 @@ a {
 }
 
 #header > .header-container > .menu-container > .item:hover {
-    background-color: #e0e0e0b0;
-    transform: scale(1.2);
+    transform: scale(1.25);
 }
 
 #header > .header-container > .menu-container > .item > .link {
@@ -211,6 +208,10 @@ a {
     font-size: 1.25rem;
     font-weight: 500;
     padding: 1.125rem 0.625rem;
+}
+
+#header > .header-container > .menu-container > .item > .link > .image {
+    height: 100%;
 }
 
 #loading {

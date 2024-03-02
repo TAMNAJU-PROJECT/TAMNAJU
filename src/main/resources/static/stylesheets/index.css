@@ -70,20 +70,33 @@
     background-color: #ffffff30;
 }
 
-#main > .main-img-container > .category-container > .category > .list {
+#main > .main-img-container > .category-container > .category > .item {
     width: 10rem; /* 뷰포트 너비 또는 높이의 20%로 설정하여 정사각형 유지 */
     height: 10rem;
     border-radius: 1rem;
     background-color: #ff8400; /* 배경색은 예시로 지정한 색상 */
     margin: 2rem; /* 각 정사각형 간의 간격을 설정 */
 
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     transition-property: transform;
     transition-duration: 250ms;
     transition-timing-function: ease;
 }
 
-#main > .main-img-container > .category-container > .category > .list:hover {
+#main > .main-img-container > .category-container > .category > .item:hover {
     transform: scale(1.1);
+}
+
+#main > .main-img-container > .category-container > .category > .item > .link {
+    height: 80%;
+}
+
+#main > .main-img-container > .category-container > .category > .item > .link > .image {
+    height: 100%;
 }
 
 #main > .main-container {

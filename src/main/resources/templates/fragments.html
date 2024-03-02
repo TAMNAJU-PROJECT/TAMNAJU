@@ -48,16 +48,22 @@
         <div class="spring"></div>
         <ul class="menu-container">
             <li class="item" th:if="${authentication == null}">
-                <a class="link" th:href="@{/join}">회원 가입</a>
+                <a class="link" th:href="@{/join}">
+                    <img class="image" th:src="@{/images/icons/register-icon.png}" alt="회원가입">
+                </a>
             </li>
             <li class="item" th:if="${authentication == null}">
-                <a class="link" th:href="@{/login}">로그인</a>
+                <a class="link" th:href="@{/login}">
+                    <img class="image" th:src="@{/images/icons/login-icon.png}" alt="로그인">
+                </a>
             </li>
             <li class="item" th:if="${authentication != null}">
                 <a class="link" th:href="@{/my-info}">내 정보</a>
             </li>
             <li class="item" th:if="${authentication != null}">
-                <a class="link" th:href="@{/logout}">로그아웃</a>
+                <a class="link" th:href="@{/logout}">
+                    <img class="image" th:src="@{/images/icons/logout-icon.png}" alt="로그아웃">
+                </a>
             </li>
         </ul>
     </div>
