@@ -16,7 +16,8 @@ body {
     width: 100vw;
     position: fixed;
 
-    overflow: scroll;
+    overflow-x: scroll;
+
 
     z-index: 1;
 }
@@ -62,6 +63,16 @@ body {
 
 #table > tbody > tr > td.table-date {
     background-color: #C0C0C0;
+}
+
+#table .icon_cloud {
+    height: 3rem;
+    width: 3rem;
+}
+
+#table .icon_rain {
+    height: 2rem;
+    width: 2rem;
 }
 
 
