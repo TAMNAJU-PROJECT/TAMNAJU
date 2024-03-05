@@ -216,14 +216,27 @@ function getShortWeatherInfo(modifiedDate, nx, ny) {
                 const firstIndex = timeArray.findIndex(
                     (datas) => datas[0]?.['fcstDate']
                 );
-                console.log(firstIndex);
-                dateCell.innerText = timeArray[firstIndex][0]['fcstDate'];
+                const dateText = timeArray[firstIndex][0]['fcstDate'];
+                dateCell.innerText = `${dateText.substring(0, 4)}년 ${
+                    dateText.substring(4, 6) < 10
+                        ? dateText.substring(5, 6)
+                        : dateText.substring(4, 6)
+                }월 ${
+                    dateText.substring(6) < 10
+                        ? dateText.substring(7)
+                        : dateText.substring(6)
+                }일`;
                 dateCell.colSpan = 24 - firstIndex;
                 date.append(dateCell);
                 for (const datas of timeArray) {
                     if (datas[0]) {
                         const timeCell = document.createElement('td');
-                        timeCell.innerText = datas[0]['fcstTime'];
+                        const hour24 = datas[0]['fcstTime'].substring(0, 2);
+                        const term = hour24 < 12 ? '오전' : '오후';
+                        const hour12 = hour24 % 12 === 0 ? '12' : `${hour24 % 12}`;
+                        timeCell.innerText = `${term}\n${
+                            hour12
+                        }시`;
                         time.append(timeCell);
                         for (const data of datas) {
                             const cell = document.createElement('td');
@@ -302,7 +315,7 @@ function getShortWeatherInfo(modifiedDate, nx, ny) {
                 }
             }
             tbody.append(date, time, temperature, cloud, rain, rate);
-
+            info.classList.add('visible');
         })
         .catch((err) => {
             console.log('오류가 발생했습니다.');
