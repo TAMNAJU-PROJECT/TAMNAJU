@@ -3,40 +3,87 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     margin: 0;
-}
-
-
-#map {
     height: 100vh;
 }
 
-#cover {top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(0.25rem);
-    background-color: rgba(0,0,0,50%);
-    opacity: 0;
-    pointer-events: none;
+#main {
+    flex: 1;
+}
+
+#main > .table-container {
+    bottom: 0;
+    height: 30vh;
+    width: 100vw;
     position: fixed;
-    transition-duration: 375ms;
-    transition-property: opacity;
-    transition-timing-function: linear;
+
+    overflow-x: scroll;
+
+
     z-index: 1;
 }
 
-
-#cover.visible {
-    opacity: 1;
-    pointer-events: all;
+#map {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    backdrop-filter: blur(0.25rem);
+    background-color: rgba(0,0,0,50%);
 }
 
-#info {
-    top: 0;
-    left: -1rem;
-    width: 22.5rem;
+.table-container {
+    display: flex;
+    flex-direction: row;
+}
+
+#table {
+    display: flex;
+    flex-direction: column;
+    bottom: 0;
     height: 100%;
-    background-color: rgb(255,255,255);
+    width: 100%;
+
+    text-align: center;
+}
+
+
+#table > tbody > tr {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    font: inherit;
+    margin :unset;
+    outline: none;
+    padding: unset;
+}
+
+#table > tbody > tr:nth-child(even) {
+    background-color: #E0E0E0;
+}
+
+#table > tbody > tr > td.table-date {
+    background-color: #C0C0C0;
+}
+
+#table .icon_cloud {
+    height: 3rem;
+    width: 3rem;
+}
+
+#table .icon_rain {
+    height: 2rem;
+    width: 2rem;
+}
+
+
+
+#info {
+    top: 1rem;
+    left: 0.5rem;
+    width: 13.5rem;
+    bottom : 1rem;
+    border-radius: 2rem;
+    background-color: rgba(255,255,255, 50%);
     opacity: 0;
     pointer-events: none;
     position: fixed;
@@ -49,6 +96,10 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+}
+
+#info:hover {
+    background-color: rgba(255,255,255, 90%);
 }
 
 #info.visible {
@@ -79,12 +130,13 @@ body {
     cursor: pointer;
     padding: 0.5rem;
 }
+
 #info > .data-container {
     flex: 1;
     list-style-type: none;
     overflow: hidden auto;
     margin-block: unset;
-    margin-inside: unset;
+    margin-inline: unset;
     padding-inline: unset;
     padding: 1rem;
 }
