@@ -1,0 +1,58 @@
+#main > .table-container {
+    width: 70%;
+    
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#notice-table {
+    width: 100%;
+
+    text-align: center;
+}
+
+#button-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#button-wrapper > .page-button-container {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+}
+
+#button-wrapper > .page-button-container > ul {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: flex-start;
+}
+
+#button-wrapper > .page-button-container > ul > .page-button {
+    height: 1.5rem;
+    width: 1.5rem;
+
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    transition-duration: 250ms;
+    transition-property: transform;
+    transition-timing-function: ease;
+}
+
+#button-wrapper > .page-button-container > ul > .page-button:hover {
+    transform: scale(1.25);
+}

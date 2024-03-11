@@ -4,17 +4,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.tamnaju.dev.domains.entities.NoticeEntity;
+import com.tamnaju.dev.domains.vos.SearchVo;
 
 @Mapper
 public interface NoticeMapper {
     public NoticeEntity findNoticeById(@Param(value = "id") int id);
 
-    public NoticeEntity[] findNoticesByNotice(@Param(value = "noticeEntity") NoticeEntity noticeEntity,
-            @Param(value = "orderBy") String orderBy,
-            @Param(value = "limit") int limit,
-            @Param(value = "offset") int offset);
+    public NoticeEntity[] findNotices(SearchVo searchVo);
 
-    public int findNoticesByNoticeWithoutData(@Param(value = "noticeEntity") NoticeEntity noticeEntity);
+    public int findNoticesWithoutData(SearchVo searchVo);
 
     public int saveNotice(NoticeEntity noticeEntity);
 }

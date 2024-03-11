@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class NoticeDto {
-    private String id;
+    private int id;
     @NotBlank
     @Pattern(regexp = "^[\\dA-Za-z]{2,32}$", message = "서버에서 지원하지 않는 형태의 ID 입니다.")
     private String userId;
@@ -24,7 +24,7 @@ public class NoticeDto {
     @NotBlank
     @Pattern(regexp = "^[A-Za-z가-힣\\s]{1,500}$")
     private String content;
-    private String view;
+    private int view;
     private String postedAt;
     private String modifiedAt;
     private String deletedAt;

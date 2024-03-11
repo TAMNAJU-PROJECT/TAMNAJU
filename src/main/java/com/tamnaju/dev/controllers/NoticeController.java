@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tamnaju.dev.domains.dtos.NoticeDto;
 import com.tamnaju.dev.domains.services.NoticeService;
+import com.tamnaju.dev.domains.vos.SearchVo;
 import com.tamnaju.dev.utilities.CustomAuthChecker;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,10 +32,15 @@ public class NoticeController {
     @GetMapping(value = "/list")
     public void getList(@RequestAttribute(value = "authentication", required = false) Authentication authentication,
             Model model,
-            NoticeDto noticeDto) throws IOException {
+            SearchVo searchVo) throws IOException {
         authChecker.applyAuthentication(authentication, model);
-        NoticeDto[] noticeDtos = noticeService.selectNotices(noticeDto);
-        model.addAttribute("noticeDtos", noticeDtos);
+
+        NoticeDto[] noticeDtos = noticeService.selectNotices(searchVo);
+        model.addAttribute("responseDtos", noticeDtos);
+        model.addAttribute("requestVo", searchVo);
+        int pages = (int) Math.ceil(noticeService.selectNoticesWithoutData(searchVo) / searchVo.getLimit());
+        model.addAttribute("pages", pages);
+        log.info(searchVo.getOrderBy());
     }
 
     @GetMapping(value = "/write")
@@ -51,14 +57,15 @@ public class NoticeController {
     @PostMapping(value = "/write")
     public JSONObject postWrite(
             @RequestAttribute(value = "authentication", required = false) Authentication authentication,
-            HttpServletResponse response) throws IOException {
+            HttpServletResponse response,
+            NoticeDto noticeDto) throws IOException {
         if (authChecker.isAdmin(authentication)) {
             log.warn("[NoticeController] postWrite()\n\tNot Admin");
             response.sendRedirect("/");
             return null;
         }
         JSONObject responsObject = new JSONObject();
-        // TODO 공지사항을 db에 추가하는 로직 필요
+        noticeService.insertNotice(noticeDto);
         return responsObject;
     }
 

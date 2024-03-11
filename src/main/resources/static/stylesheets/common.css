@@ -281,15 +281,6 @@ a {
     flex: 1;
 }
 
-#footer {
-    background-color: #d5d8dc;
-}
-
-#footer > .content-container {
-    color: #566573;
-    padding: 1.5rem 0;
-}
-
 .common-button {
     background-color: #ffffff;
     border: 0.0625rem solid #d5d8dcc0;
@@ -444,12 +435,17 @@ a {
 
 /* footer */
 #footer {
-    width: 90%;
+    width: 100vw;
     height: 12%;
 
     font-size: 0.8rem;
     font-weight: 300;
     background-color: #ffffff;
+}
+
+#footer > .content-container {
+    color: #566573;
+    padding: 1.5rem 0;
 }
 
 

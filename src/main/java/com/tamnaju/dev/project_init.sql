@@ -47,8 +47,11 @@ CREATE TABLE IF NOT EXISTS `tamnaju_db`.`qnas` (
         ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `tamnaju_db`.`signature` (
-    `key_byte` VARBINARY(32) NOT NULL,
-    `created_at` DATETIME NOT NULL,
-    CONSTRAINT PRIMARY KEY (`key_byte`)
-);
+INSERT INTO `tamnaju_db`.`notices` (`user_id`, `title`, `content`)
+VALUES ('shuffler54', 'title', 'content'),
+       ('shuffler54', 'title', 'content'),
+       ('shuffler54', 'title', 'content'),
+       ('shuffler54', 'title', 'content'),
+       ('shuffler54', 'title', 'content'),
+       ('shuffler54', 'title', 'content'),
+       ('shuffler54', 'title', 'content');

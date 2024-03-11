@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class NoticeEntity {
-    private String id;
+    private int id;
     private String userId;
     private String title;
     private String content;
-    private String view;
+    private int view;
     private String postedAt;
     private String modifiedAt;
     private String deletedAt;

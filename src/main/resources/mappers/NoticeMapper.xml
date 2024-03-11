@@ -16,7 +16,8 @@
         LIMIT 1
     </select>
 
-    <select id="findNoticesByNotice"
+    <select id="findNotices"
+        parameterType="com.tamnaju.dev.domains.vos.SearchVo"
         resultType="com.tamnaju.dev.domains.entities.NoticeEntity">
         SELECT `id`          AS `id`,
                `user_id`     AS `userId`,
@@ -27,21 +28,20 @@
                `modified_at` AS `modifiedAt`,
                `deleted_at`  AS `deletedAt`
         FROM `tamnaju_db`.`notices`
-        WHERE `user_id` CONCAT('$', #{noticeEntity.userId}, '$')
-            AND `title` CONCAT('$', #{noticeEntity.title}, '$')
-            AND `content` CONCAT('$', #{noticeEntity.content}, '$')
-        ORDER BY `#{orderBy}` DESC
+        WHERE `user_id` LIKE CONCAT('%', #{userId}, '%')
+            AND `title` LIKE CONCAT('%', #{title}, '%')
+            AND `content` LIKE CONCAT('%', #{content}, '%')
+        <if test="orderBy.equals('id')">ORDER BY `id` DESC</if>
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <select id="findNoticesByNoticeWithoutData">
+    <select id="findNoticesWithoutData"
+        parameterType="com.tamnaju.dev.domains.vos.SearchVo">
         SELECT COUNT(0)
         FROM `tamnaju_db`.`notices`
-        WHERE `user_id` CONCAT('$', #{noticeEntity.userId}, '$')
-            AND `title` CONCAT('$', #{noticeEntity.title}, '$')
-            AND `content` CONCAT('$', #{noticeEntity.content}, '$')
-        ORDER BY `#{orderBy}` DESC
-        LIMIT #{limit} OFFSET #{offset}
+        WHERE `notices`.`user_id` LIKE CONCAT('%', #{userId}, '%')
+            AND `notices`.`title` LIKE CONCAT('%', #{title}, '%')
+            AND `notices`.`content` LIKE CONCAT('%', #{content}, '%')
     </select>
 
     <insert id="saveNotice"
