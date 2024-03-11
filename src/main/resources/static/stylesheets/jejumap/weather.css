@@ -16,7 +16,8 @@ body {
     width: 100vw;
     position: fixed;
 
-    overflow: scroll;
+    overflow-x: scroll;
+
 
     z-index: 1;
 }
@@ -30,12 +31,21 @@ body {
     background-color: rgba(0,0,0,50%);
 }
 
+.table-container {
+    display: flex;
+    flex-direction: row;
+}
+
 #table {
+    display: flex;
+    flex-direction: column;
+    bottom: 0;
     height: 100%;
     width: 100%;
 
     text-align: center;
 }
+
 
 #table > tbody > tr {
     background-color: inherit;
@@ -51,19 +61,28 @@ body {
     background-color: #E0E0E0;
 }
 
-#table > tbody > tr > * {
-    min-width: 3rem;
-}
-
 #table > tbody > tr > td.table-date {
     background-color: #C0C0C0;
 }
 
+#table .icon_cloud {
+    height: 3rem;
+    width: 3rem;
+}
+
+#table .icon_rain {
+    height: 2rem;
+    width: 2rem;
+}
+
+
+
 #info {
-    top: 0;
-    left: -1rem;
-    width: 22.5rem;
-    height: 100%;
+    top: 1rem;
+    left: 0.5rem;
+    width: 13.5rem;
+    bottom : 1rem;
+    border-radius: 2rem;
     background-color: rgba(255,255,255, 50%);
     opacity: 0;
     pointer-events: none;

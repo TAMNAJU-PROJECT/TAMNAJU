@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS `tamnaju_db`.`notices` (
     `deleted_at` DATETIME NULL DEFAULT NULL,
     CONSTRAINT PRIMARY KEY (`id`),
     CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `tamnaju_db`.`users` (`id`)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `tamnaju_db`.`qnas` (
