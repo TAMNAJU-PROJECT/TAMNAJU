@@ -9,6 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.tamnaju.dev.configs.jwt.TokenProvider;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +26,10 @@ public class CustomInterceptor implements HandlerInterceptor {
             throws Exception {
         Authentication authentication;
 
+        Cookie[] cookies = request.getCookies();
         try {
-            if (request.getCookies() != null) {
-                String accessToken = Arrays.stream(request.getCookies())
+            if (cookies != null) {
+                String accessToken = Arrays.stream(cookies)
                         .filter(cookie -> cookie.getName().equals(TokenProvider.ACCESS_TOKEN)).findFirst()
                         .map(cookie -> cookie.getValue())
                         .orElse(null);

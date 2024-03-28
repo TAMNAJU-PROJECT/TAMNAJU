@@ -14,4 +14,6 @@ public interface UserMapper {
     public UserEntity findUserByProviderId(@Param(value = "providerId") String providerId);
 
     public int saveUser(UserEntity userEntity);
+
+    public int modifyUserByEmail(UserEntity userEntity);
 }

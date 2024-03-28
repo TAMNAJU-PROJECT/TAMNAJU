@@ -14,15 +14,15 @@
     <main class="spring">
         <div id="title">공지사항 - 게시물 작성</div>
         <form id="write">
-            <label>
+            <label class="first">
                 <div class="subject">제목</div>
-                <input class="content" type="text" name="title">
+                <input class="content spring" type="text" maxlength="25" minlength="1" name="title" placeholder="25자 이내로 작성해주세요.">
             </label>
-            <label>
+            <label class="second">
                 <div class="subject">내용</div>
-                <input class="content" type="text" name="content">
+                <textarea class="content spring" maxlength="500" minlength="1" name="content" rows="5" placeholder="500자 이내로 작성해주세요."></textarea>
             </label>
-            <input type="submit" value="게시하기">
+            <input type="submit" value="게시하기" class="spring">
         </form>
     </main>
     <th:block th:replace="~{fragments :: footer}"></th:block>

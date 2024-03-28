@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tamnaju.dev.domains.dtos.NoticeDto;
+import com.tamnaju.dev.domains.results.notice.NoticePostResult;
 import com.tamnaju.dev.domains.services.NoticeService;
 import com.tamnaju.dev.domains.vos.SearchVo;
 import com.tamnaju.dev.utilities.CustomAuthChecker;
@@ -44,33 +46,43 @@ public class NoticeController {
     }
 
     @GetMapping(value = "/write")
-    public void getWrite(@RequestAttribute(value = "authentication", required = false) Authentication authentication,
+    public String getWrite(@RequestAttribute(value = "authentication", required = false) Authentication authentication,
             Model model,
             HttpServletResponse response) throws IOException {
-        if (authChecker.isAdmin(authentication)) {
+        if (!authChecker.isAdmin(authentication)) {
             log.error("[NoticeController] getWrite()\n\tNot Admin");
-            response.sendRedirect("/");
+            return "/";
+        } else {
+            log.info("[NoticeController] getWrite()\n\tIs Admin");
+            authChecker.applyAuthentication(authentication, model);
+            return "notice/write";
         }
-        authChecker.applyAuthentication(authentication, model);
     }
 
+    @ResponseBody
     @PostMapping(value = "/write")
     public JSONObject postWrite(
             @RequestAttribute(value = "authentication", required = false) Authentication authentication,
             HttpServletResponse response,
             NoticeDto noticeDto) throws IOException {
-        if (authChecker.isAdmin(authentication)) {
+        if (!authChecker.isAdmin(authentication)) {
             log.warn("[NoticeController] postWrite()\n\tNot Admin");
             response.sendRedirect("/");
             return null;
         }
         JSONObject responsObject = new JSONObject();
-        noticeService.insertNotice(noticeDto);
+        noticeDto.setUserId(authentication.getName());
+        NoticePostResult result = noticeService.insertNotice(noticeDto);
+        responsObject.put("result", result.name().toLowerCase());
         return responsObject;
     }
 
     @GetMapping(value = "/read")
-    public void getRead(@RequestAttribute(value = "authentication", required = false) Authentication authentication) {
+    public void getRead(@RequestAttribute(value = "authentication", required = false) Authentication authentication,
+            Model model,
+            NoticeDto noticeDto) {
+        NoticeDto dbNoticeDto = noticeService.selecNoticeById(noticeDto.getId());
+        model.addAttribute("dbNoticeDto", dbNoticeDto);
     }
 
     @GetMapping(value = "/modify")

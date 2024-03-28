@@ -11,7 +11,7 @@
 
 <body>
     <th:block th:replace="~{fragments :: header}"></th:block>
-    <main class="spring">
+    <main id="main" class="spring">
         <div class="table-container">
             <table id="notice-table">
                 <thead>
@@ -23,16 +23,24 @@
                 </thead>
                 <tbody>
                     <tr th:if="${responseDtos != null}" th:each="responseDto : ${responseDtos}">
-                        <td th:text="${responseDto.getId()}"></td>
-                        <td th:text="${responseDto.getTitle()}"></td>
-                        <td th:text="${responseDto.getUserId()}"></td>
-                        <td th:text="${responseDto.getPostedAt()}"></td>
-                        <td th:text="${responseDto.getView()}"></td>
+                        <td class="id" th:text="${responseDto.getId()}"></td>
+                        <td class="title">
+                            <a class="link" th:text="${responseDto.getTitle()}" th:href="@{'./read?id=' + ${responseDto.getId()}}"></a>
+                        </td>
+                        <td class="userId" th:text="${responseDto.getUserId()}"></td>
+                        <td class="postedAt" th:text="${responseDto.getPostedAt()}"></td>
+                        <td class="view" th:text="${responseDto.getView()}"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div id="button-wrapper">
+            <div class="write-button-container" th:if="${isAdmin}">
+                <div class="spring"></div>
+                <div class="button">
+                    <a href="./write">게시물<br>작성</a>
+                </div>
+            </div>
             <div class="page-button-container" th:with="range = ${4}">
                 <div class="page-button" th:if="${requestVo.getPage() > range + 1}">
                     <a class="link" th:href="@{'./list?page=' + ${requestVo.getPage() - range - 1}}">&lt;&lt;</a>

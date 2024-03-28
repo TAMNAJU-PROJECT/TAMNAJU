@@ -9,6 +9,7 @@ public class CustomAuthChecker {
     public void applyAuthentication(Authentication authentication,
             Model model) throws IOException {
         model.addAttribute("authentication", authentication);
+        model.addAttribute("isAdmin", this.isAdmin(authentication));
     }
 
     public boolean isAdmin(Authentication authentication) {

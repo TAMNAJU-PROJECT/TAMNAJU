@@ -12,12 +12,13 @@ body {
 
 #main > .table-container {
     bottom: 0;
-    height: 30vh;
     width: 100vw;
-    position: fixed;
+    position: relative;
 
     overflow-x: scroll;
 
+    display: flex;
+    flex-direction: row;
 
     z-index: 1;
 }
@@ -29,11 +30,6 @@ body {
     height: 70%;
     backdrop-filter: blur(0.25rem);
     background-color: rgba(0,0,0,50%);
-}
-
-.table-container {
-    display: flex;
-    flex-direction: row;
 }
 
 #table {
@@ -74,8 +70,6 @@ body {
     height: 2rem;
     width: 2rem;
 }
-
-
 
 #info {
     top: 1rem;

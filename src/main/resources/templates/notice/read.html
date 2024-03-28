@@ -6,13 +6,25 @@
     <title>탐나주 - 공지사항</title>
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
     <link rel="stylesheet" th:href="@{/stylesheets/notice/read.css}">
-    <script defer th:src="@{/scripts/join.js}"></script>
+    <script defer th:src="@{/scripts/notice/read.js}"></script>
 </head>
 
 <body>
     <th:block th:replace="~{fragments :: header}"></th:block>
     <main class="spring">
-        read
+        <div id="title">
+            <div class="subject">제목</div>
+            <div class="spring" th:text="${dbNoticeDto.getTitle()}"></div>
+        </div>
+        <div>
+            <div class="subject">작성자</div>
+            <div id="userId" th:text="${dbNoticeDto.getUserId()}"></div>
+        </div>
+        <div id="content">
+            <div class="subject">내용</div>
+            <div class="spring" th:text="${dbNoticeDto.getContent()}"></div>
+        </div>
+        <a id="list" class="link" th:href="@{./list}">목록 보기</a>
     </main>
     <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>

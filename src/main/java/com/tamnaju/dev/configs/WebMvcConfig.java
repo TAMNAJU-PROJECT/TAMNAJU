@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     @SuppressWarnings("null")
     @Override
+    
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this.customInterceptor())
                 .addPathPatterns("/**")

@@ -1,3 +1,58 @@
-#title {
-    width: 80vw;
+main {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    justify-content: flex-start;
+}
+
+main > * {
+    width: 70%;
+}
+
+#write {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    justify-content: flex-start;
+}
+
+#write > label {
+    width: 100%;
+
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0.125rem;
+    justify-content: flex-start;
+}
+
+#write > label > .subject {
+    width: 3rem;
+
+    text-align: center;
+}
+
+#write > label > * {
+    padding: 0.25rem;
+
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+}
+
+#write > .second > input {
+    height: 5rem;
+    width: 100%;
+
+    text-wrap: wrap;
+}
+
+#write > [type="submit"] {
+    padding: 0.5rem;
+
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+
+    cursor: pointer;
 }

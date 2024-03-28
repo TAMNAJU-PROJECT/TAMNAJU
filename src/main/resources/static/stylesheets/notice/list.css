@@ -1,14 +1,36 @@
-main > .table-container {
+#main > .table-container {
+    margin-bottom: 2rem;
+
     align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
-main > .table-container > * {
+#main > .table-container > * {
     width: 70%;
 
     text-align: center;
+}
+
+#notice-table > * > tr > td.id {
+    width: 3rem;
+}
+
+#notice-table > * > tr > td.title {
+    flex: 1;
+}
+
+#notice-table > * > tr > td.userId {
+    width: 10rem;
+}
+
+#notice-table > * > tr > td.postedAt {
+    width: 10rem;
+}
+
+#notice-table > * > tr > td.view {
+    width: 3rem;
 }
 
 #notice-table > tbody > tr:nth-child(even) {
@@ -28,6 +50,31 @@ main > .table-container > * {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+}
+
+#button-wrapper > .write-button-container {
+    width: 70%;
+
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+#button-wrapper > .write-button-container > .button {
+    text-align: center;
+
+    background-color: #e0e0e0;
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+
+    transition-duration: 250ms;
+    transition-property: transform;
+    transition-timing-function: ease;
+}
+
+#button-wrapper > .write-button-container > .button:hover {
+    transform: scale(1.2);
 }
 
 #button-wrapper > .page-button-container {

@@ -42,13 +42,14 @@ dependencies {
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	testImplementation 'org.springframework.security:spring-security-test'
 
-// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 
 	//ORM_JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation group: 'org.json', name: 'json', version: '20240303'
 }
 
 tasks.named('test') {

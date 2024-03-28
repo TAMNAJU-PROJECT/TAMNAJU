@@ -49,8 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/join", "/login").anonymous()
                         .requestMatchers("/logout").hasRole("USER")
                         .requestMatchers("/notice/write", "/notice/modify").hasRole("ADMIN")
-                        .requestMatchers("/user/**", "/notice/**").permitAll()
-                        .requestMatchers("/jejumap/**").permitAll()
+                        .requestMatchers("/user/**", "/notice/**", "/jejumap/**").permitAll()
                         .anyRequest().authenticated())
 
                 // Jwt login

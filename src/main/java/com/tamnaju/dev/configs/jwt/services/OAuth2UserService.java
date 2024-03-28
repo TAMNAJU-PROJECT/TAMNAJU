@@ -84,18 +84,34 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         // DB에 user 정보 여부에 따른 처리
         UserDto userDto;
-        UserEntity dbUserEntity = userMapper.findUserByProviderId(providerId);
-        if (dbUserEntity == null) {
-            UserEntity userEntity = UserEntity.builder()
-                    .id(providerId)
-                    .email(email)
-                    .name(name)
-                    .password(passwordEncoder.encode(oAuth2User.hashCode() + "").substring(0, 60))
-                    .birth(birth)
-                    .provider(provider)
-                    .providerId(providerId)
-                    .build();
-            userMapper.saveUser(userEntity);
+        UserEntity dbUserEntityByProviderId = userMapper.findUserByProviderId(providerId);
+        if (dbUserEntityByProviderId == null) {
+            UserEntity userEntity;
+            UserEntity dbUserEntityByEmail = userMapper.findUserByEmail(email);
+            if (dbUserEntityByEmail == null) {
+                userEntity = UserEntity.builder()
+                        .id(providerId)
+                        .email(email)
+                        .name(name)
+                        .password(passwordEncoder.encode(oAuth2User.hashCode() + "").substring(0, 60))
+                        .birth(birth)
+                        .provider(provider)
+                        .providerId(providerId)
+                        .build();
+                userMapper.saveUser(userEntity);
+            } else {
+                userEntity = UserEntity.builder()
+                        .id(dbUserEntityByEmail.getId())
+                        .email(dbUserEntityByEmail.getEmail())
+                        .name(name)
+                        .password(dbUserEntityByEmail.getPassword())
+                        .birth(birth)
+                        .provider(provider)
+                        .providerId(providerId)
+                        .build();
+                userMapper.modifyUserByEmail(userEntity);
+            }
+
             // DB에 없을 시, 새로 생성한 User 정보 할당
             userDto = UserDto.userEntityToUserDto(userEntity);
 
@@ -103,7 +119,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                     "\n\tnew member : " + providerId);
         } else {
             // DB에 있을 시, 기존 User 정보 할당
-            userDto = UserDto.userEntityToUserDto(dbUserEntity);
+            userDto = UserDto.userEntityToUserDto(dbUserEntityByProviderId);
 
             log.info("[OAuth2UserService] loadUser() : done" +
                     "\n\told member : " + providerId);

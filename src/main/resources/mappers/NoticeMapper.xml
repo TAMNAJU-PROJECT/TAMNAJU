@@ -46,21 +46,11 @@
 
     <insert id="saveNotice"
         parameterType="com.tamnaju.dev.domains.entities.NoticeEntity">
-        INSERT INTO `tamnaju_db`.`notices` (`id`,
-                                            `user_id`,
+        INSERT INTO `tamnaju_db`.`notices` (`user_id`,
                                             `title`,
-                                            `content`,
-                                            `view`,
-                                            `posted_at`,
-                                            `modified_at`,
-                                            `deleted_at`)
-        VALUES (#{id},
-                #{userId},
+                                            `content`)
+        VALUES (#{userId},
                 #{title},
-                #{content},
-                #{view},
-                #{postedAt},
-                #{modifiedAt},
-                #{deletedAt})
+                #{content})
     </insert>
 </mapper>

@@ -64,13 +64,13 @@ public class NoticeService {
             searchVo.setOrderBy("id");
         }
         if (limit <= 0) {
-            log.warn("[NoticeService] selectNotices" +
+            log.warn("[NoticeService] selectNotices()" +
                     "\n\tToo Small Limit Number : " + limit);
             limit = 10;
             searchVo.setLimit(10);
         }
         if (page <= 0) {
-            log.warn("[NoticeService] selectNotices" +
+            log.warn("[NoticeService] selectNotices()" +
                     "\n\tToo Small Page Number : " + page);
             page = 1;
             searchVo.setPage(1);
