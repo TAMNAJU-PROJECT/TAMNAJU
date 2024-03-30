@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserDto {
     @NotBlank
-    @Pattern(regexp = "^[\\dA-Za-z]{2,32}$", message = "숫자, 또는 영어로 된 32자 이하의 별명을 입력해야 합니다.")
+    @Pattern(regexp = "^[\\dA-Za-z]{2,32}$", message = "숫자, 또는 영어로 된 32자 이하의 ID를 입력해야 합니다.")
     private String id;
     @Pattern(regexp = "^(?=[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}).{1,50}$", message = "서버가 인식할 수 없는 형식의 Email입니다.")
     private String email;

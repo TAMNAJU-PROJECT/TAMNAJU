@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>탐나주 - 로그인</title>
+    <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
+    <link rel="stylesheet" th:href="@{/stylesheets/login.css}">
+    <script defer th:src="@{/scripts/login.js}"></script>
+</head>
+
+<body>
+    <th:block th:replace="~{fragments :: header}"></th:block>
+    <main class="spring">
+        <form id="loginForm" th:action="@{/login}" method="post">
+            <label>
+                <span class="text">ID</span>
+                <input name="id" type="text" placeholder="ID를 입력해주세요" class="spring">
+            </label>
+            <label>
+                <span class="text">비밀번호</span>
+                <input name="password" type="password" placeholder="비밀번호를 입력해주세요" class="spring">
+            </label>
+            <label>
+                <input type="submit" value="로그인" class="spring">
+            </label>
+        </form>
+        <div class="container unauthenticated">
+            With Kakao: <a href="/oauth2/authorization/kakao">click here</a>
+        </div>
+    </main>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+
+</html>

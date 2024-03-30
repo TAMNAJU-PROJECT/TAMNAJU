@@ -35,4 +35,6 @@ public class DataSourceConfig {
         sessionFactory.setMapperLocations(applicationContext.getResources("classpath:mappers/*.xml"));
         return sessionFactory.getObject();
     }
+
+    
 }

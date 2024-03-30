@@ -5,16 +5,69 @@
     <meta charset="UTF-8">
     <title>탐나주 - 공지사항</title>
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
-    <link rel="stylesheet" th:href="@{/user/stylesheets/join.css}">
-    <script defer th:src="@{/user/scripts/join.js}"></script>
+    <link rel="stylesheet" th:href="@{/stylesheets/notice/list.css}">
+    <script defer th:src="@{/scripts/notice/list.js}"></script>
 </head>
 
 <body>
-    <th:block th:replace="~{fragment :: header}"></th:block>
-    <main class="spring">
-        list
+    <th:block th:replace="~{fragments :: header}"></th:block>
+    <main id="main" class="spring">
+        <div class="table-container">
+            <table id="notice-table">
+                <thead>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일자</th>
+                    <th>조회수</th>
+                </thead>
+                <tbody>
+                    <tr th:if="${responseDtos != null}" th:each="responseDto : ${responseDtos}">
+                        <td class="id" th:text="${responseDto.getId()}"></td>
+                        <td class="title">
+                            <a class="link" th:text="${responseDto.getTitle()}" th:href="@{'./read?id=' + ${responseDto.getId()}}"></a>
+                        </td>
+                        <td class="userId" th:text="${responseDto.getUserId()}"></td>
+                        <td class="postedAt" th:text="${responseDto.getPostedAt()}"></td>
+                        <td class="view" th:text="${responseDto.getView()}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="button-wrapper">
+            <div class="write-button-container" th:if="${isAdmin}">
+                <div class="spring"></div>
+                <div class="button">
+                    <a href="./write">게시물<br>작성</a>
+                </div>
+            </div>
+            <div class="page-button-container" th:with="range = ${4}">
+                <div class="page-button" th:if="${requestVo.getPage() > range + 1}">
+                    <a class="link" th:href="@{'./list?page=' + ${requestVo.getPage() - range - 1}}">&lt;&lt;</a>
+                </div>
+                <div class="page-button" th:if="${requestVo.getPage() > 1}">
+                    <a class="link" th:href="@{'./list?page=' + ${requestVo.getPage() - 1}}">&lt;</a>
+                </div>
+
+                <ul th:if="${responseDtos != null}" th:with="first = ${T(java.lang.Math).max(1, requestVo.getPage() - range)},
+                    last = ${T(java.lang.Math).min(requestVo.getPage() + range, pages)}">
+                    <li class="page-button" th:each="page : ${#numbers.sequence(first, last)}">
+                        <a class="link" th:if="${page != requestVo.getPage()}" th:href="@{'./list?page=' + ${page}}"
+                            th:text="${page}"></a>
+                        <div class="link" th:if="${page == requestVo.getPage()}" th:text="${page}"></div>
+                    </li>
+                </ul>
+
+                <div class="page-button" th:if="${requestVo.getPage() < pages}">
+                    <a class="link" th:href="@{'./list?page=' + ${requestVo.getPage() + 1}}">&gt;</a>
+                </div>
+                <div class="page-button" th:if="${requestVo.getPage() < pages - range}">
+                    <a class="link" th:href="@{'./list?page=' + ${requestVo.getPage() + range + 1}}">&gt;&gt;</a>
+                </div>
+            </div>
+        </div>
     </main>
-    <th:block th:replace="~{fragment :: footer}"></th:block>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 
 </html>

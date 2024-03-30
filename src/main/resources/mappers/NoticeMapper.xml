@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tamnaju.dev.domains.mappers.NoticeMapper">
+    <select id="findNoticeById"
+        resultType="com.tamnaju.dev.domains.entities.NoticeEntity">
+        SELECT `id`          AS `id`,
+               `user_id`     AS `userId`,
+               `title`       AS `title`,
+               `content`     AS `content`,
+               `view`        AS `view`,
+               `posted_at`   AS `postedAt`,
+               `modified_at` AS `modifiedAt`,
+               `deleted_at`  AS `deletedAt`
+        FROM `tamnaju_db`.`notices`
+        WHERE `id` = #{id}
+        LIMIT 1
+    </select>
+
+    <select id="findNotices"
+        parameterType="com.tamnaju.dev.domains.vos.SearchVo"
+        resultType="com.tamnaju.dev.domains.entities.NoticeEntity">
+        SELECT `id`          AS `id`,
+               `user_id`     AS `userId`,
+               `title`       AS `title`,
+               `content`     AS `content`,
+               `view`        AS `view`,
+               `posted_at`   AS `postedAt`,
+               `modified_at` AS `modifiedAt`,
+               `deleted_at`  AS `deletedAt`
+        FROM `tamnaju_db`.`notices`
+        WHERE `user_id` LIKE CONCAT('%', #{userId}, '%')
+            AND `title` LIKE CONCAT('%', #{title}, '%')
+            AND `content` LIKE CONCAT('%', #{content}, '%')
+        <if test="orderBy.equals('id')">ORDER BY `id` DESC</if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="findNoticesWithoutData"
+        parameterType="com.tamnaju.dev.domains.vos.SearchVo">
+        SELECT COUNT(0)
+        FROM `tamnaju_db`.`notices`
+        WHERE `notices`.`user_id` LIKE CONCAT('%', #{userId}, '%')
+            AND `notices`.`title` LIKE CONCAT('%', #{title}, '%')
+            AND `notices`.`content` LIKE CONCAT('%', #{content}, '%')
+    </select>
+
+    <insert id="saveNotice"
+        parameterType="com.tamnaju.dev.domains.entities.NoticeEntity">
+        INSERT INTO `tamnaju_db`.`notices` (`user_id`,
+                                            `title`,
+                                            `content`)
+        VALUES (#{userId},
+                #{title},
+                #{content})
+    </insert>
+</mapper>

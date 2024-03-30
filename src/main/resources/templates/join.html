@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>탐나주 - 회원가입</title>
+    <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
+    <link rel="stylesheet" th:href="@{/stylesheets/join.css}">
+    <script defer th:src="@{/scripts/join.js}"></script>
+
+</head>
+
+<body>
+    <th:block th:replace="~{fragments :: header}"></th:block>
+    <main class="spring">
+        <form id="joinForm">
+            <label>
+                <span class="text">ID :</span>
+                <input name="id" type="text" placeholder="id을 입력해주세요.">
+            </label>
+            <div class="message" rel="m-id"></div>
+            <label>
+                <span class="text">Email :</span>
+                <input name="email" type="email" placeholder="email을 입력해주세요.">
+            </label>
+            <div class="message" rel="m-email"></div>
+            <label>
+                <span class="text">이름 :</span>
+                <input name="name" type="text" placeholder="이름을 입력해주세요.">
+            </label>
+            <div class="message" rel="m-name"></div>
+            <label>
+                <span class="text">비밀번호 :</span>
+                <input name="password" type="password" placeholder="비밀번호를 입력해주세요">
+            </label>
+            <div class="message" rel="m-password"></div>
+            <label>
+                <span class="text">생년월일 :</span>
+                <input name="birthStr" type="date">
+            </label>
+            <div class="message" rel="m-birthStr"></div>
+            <label>
+                <input type="submit" value="회원 가입">
+            </label>
+            <div class="message" rel="m-re"></div>
+        </form>
+    </main>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+
+</html>

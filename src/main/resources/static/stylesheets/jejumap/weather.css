@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    margin: 0;
+    height: 100vh;
+}
+
+#main {
+    flex: 1;
+}
+
+#main > .table-container {
+    bottom: 0;
+    width: 100vw;
+    position: relative;
+
+    overflow-x: scroll;
+
+    display: flex;
+    flex-direction: row;
+
+    z-index: 1;
+}
+
+#map {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    backdrop-filter: blur(0.25rem);
+    background-color: rgba(0,0,0,50%);
+}
+
+#table {
+    display: flex;
+    flex-direction: column;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+
+    text-align: center;
+}
+
+
+#table > tbody > tr {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    font: inherit;
+    margin :unset;
+    outline: none;
+    padding: unset;
+}
+
+#table > tbody > tr:nth-child(even) {
+    background-color: #E0E0E0;
+}
+
+#table > tbody > tr > td.table-date {
+    background-color: #C0C0C0;
+}
+
+#table .icon_cloud {
+    height: 3rem;
+    width: 3rem;
+}
+
+#table .icon_rain {
+    height: 2rem;
+    width: 2rem;
+}
+
+#info {
+    top: 1rem;
+    left: 0.5rem;
+    width: 13.5rem;
+    bottom : 1rem;
+    border-radius: 2rem;
+    background-color: rgba(255,255,255, 50%);
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    transition-duration: 250ms;
+    transition-property: left, opacity;
+    transition-timing-function: ease;
+    z-index: 2;
+
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#info:hover {
+    background-color: rgba(255,255,255, 90%);
+}
+
+#info.visible {
+    left: 0;
+    opacity: 1;
+    pointer-events: all;
+}
+
+#info > .title-container {
+    border-bottom: 0.0625rem solid rgb(220,220,220);
+    padding: 0.5rem 1rem;
+
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#info > .title-container > .title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-block: unset;
+    margin-inline: unset;
+}
+
+#info > .title-container > .close {
+    width: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+#info > .data-container {
+    flex: 1;
+    list-style-type: none;
+    overflow: hidden auto;
+    margin-block: unset;
+    margin-inline: unset;
+    padding-inline: unset;
+    padding: 1rem;
+}

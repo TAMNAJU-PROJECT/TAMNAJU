@@ -1,0 +1,35 @@
+#loginForm {
+    width: 100%;
+
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: flex-start;
+}
+
+#loginForm > label {
+    width: 70%;
+
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    justify-content: flex-start;
+}
+
+#loginForm > label > * {
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+    padding: 0.125rem;
+
+    text-align: center;
+}
+
+#loginForm > label > .text {
+    width: 10rem;
+}
+
+#loginForm > label > [type = "submit"] {
+    cursor: pointer;
+}

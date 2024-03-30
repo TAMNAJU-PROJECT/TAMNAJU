@@ -5,16 +5,27 @@
     <meta charset="UTF-8">
     <title>탐나주 - 공지사항</title>
     <link rel="stylesheet" th:href="@{/stylesheets/common.css}">
-    <link rel="stylesheet" th:href="@{/user/stylesheets/join.css}">
-    <script defer th:src="@{/user/scripts/join.js}"></script>
+    <link rel="stylesheet" th:href="@{/stylesheets/notice/write.css}">
+    <script defer th:src="@{/scripts/notice/write.js}"></script>
 </head>
 
 <body>
-    <th:block th:replace="~{fragment :: header}"></th:block>
+    <th:block th:replace="~{fragments :: header}"></th:block>
     <main class="spring">
-        write
+        <div id="title">공지사항 - 게시물 작성</div>
+        <form id="write">
+            <label class="first">
+                <div class="subject">제목</div>
+                <input class="content spring" type="text" maxlength="25" minlength="1" name="title" placeholder="25자 이내로 작성해주세요.">
+            </label>
+            <label class="second">
+                <div class="subject">내용</div>
+                <textarea class="content spring" maxlength="500" minlength="1" name="content" rows="5" placeholder="500자 이내로 작성해주세요."></textarea>
+            </label>
+            <input type="submit" value="게시하기" class="spring">
+        </form>
     </main>
-    <th:block th:replace="~{fragment :: footer}"></th:block>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 
 </html>

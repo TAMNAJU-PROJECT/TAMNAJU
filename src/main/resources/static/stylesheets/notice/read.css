@@ -1,0 +1,45 @@
+main {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: flex-start;
+}
+
+#post {
+    width: 70%;
+}
+
+.field {
+    text-align: center;
+    width: 5rem;
+}
+
+.value {
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+}
+
+#postedAt,
+#modifiedAt,
+#view {
+    text-align: center;
+}
+
+#postedAt,
+#modifiedAt {
+    width: 10rem;
+}
+
+#view {
+    width: 2rem;
+}
+
+#list {
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+
+    text-align: center;
+}
