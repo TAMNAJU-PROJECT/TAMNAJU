@@ -12,18 +12,28 @@
 <body>
     <th:block th:replace="~{fragments :: header}"></th:block>
     <main class="spring">
-        <div id="title">
-            <div class="subject">제목</div>
-            <div class="spring" th:text="${dbNoticeDto.getTitle()}"></div>
-        </div>
-        <div>
-            <div class="subject">작성자</div>
-            <div id="userId" th:text="${dbNoticeDto.getUserId()}"></div>
-        </div>
-        <div id="content">
-            <div class="subject">내용</div>
-            <div class="spring" th:text="${dbNoticeDto.getContent()}"></div>
-        </div>
+        <table id="post">
+            <tr>
+                <td class="field">제목</td>
+                <td class="value" th:text="${dbNoticeDto.getTitle()}" colspan="5"></td>
+            </tr>
+            <tr>
+                <td class="field">작성자</td>
+                <td id="userId" class="value" th:text="${dbNoticeDto.getUserId()}"></td>
+                <td class="field" th:if="${dbNoticeDto.getModifiedAt() == null}">작성일시</td>
+                <td class="field" th:if="${dbNoticeDto.getModifiedAt() != null}">수정일시</td>
+                <td id="postedAt" class="value" th:text="${dbNoticeDto.getPostedAt()}" th:if="${dbNoticeDto.getModifiedAt() == null}">
+                </td>
+                <td id="modifiedAt" class="value" th:text="${dbNoticeDto.getModifiedAt()}"
+                    th:if="${dbNoticeDto.getModifiedAt() != null}"></td>
+                <td class="field">조회수</td>
+                <td id="view" class="value" th:text="${dbNoticeDto.getView()}"></td>
+            </tr>
+            <tr>
+                <td class="field">내용</td>
+                <td class="value" th:text="${dbNoticeDto.getContent()}" colspan="5"></td>
+            </tr>
+        </table>
         <a id="list" class="link" th:href="@{./list}">목록 보기</a>
     </main>
     <th:block th:replace="~{fragments :: footer}"></th:block>

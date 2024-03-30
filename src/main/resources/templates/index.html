@@ -27,29 +27,12 @@
                         </a>
                     </li>
                     <li class="item">
-                        <a class="link" th:href="@{#}">
-                            흠...
-                        </a>
-                    </li>
-                    <li class="item">
                         <a class="link" th:href="@{/notice}">
                             <img class="image" th:src="@{/images/icons/notice-icon.png}" alt="공지사항">
                         </a>
                     </li>
                 </ul>
             </div>
-        </div>
-        <div class="main-container">
-            <!-- section2 : 날씨 API를 사용해 제주의 실시간 날씨 제공 -->
-            <div class="section2">
-                날씨정보
-            </div>
-            <!-- section3 : 비로그인 상태의 사용자에게 로그인 or 회원가입을 유도하는 영역 -->
-            <div class="section3">
-                로그인 유도 영역
-            </div>
-            <!-- section4 -->
-            <!-- section5 -->
         </div>
     </main>
     <th:block th:replace="~{fragments :: footer}"></th:block>
